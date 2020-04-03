@@ -1,0 +1,84 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+  # coronavirusbrazil
+
+<!-- badges: start -->
+[![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![GitHub commit](https://img.shields.io/github/last-commit/mralbu/coronavirusbrazil)](https://github.com/mralbu/coronavirusbrazil/commit/master)
+<!-- badges: end -->
+
+The coronavirusbrazil package provides a tidy format dataset of the 2019 Novel Coronavirus COVID-19 (2019-nCoV) epidemic for Brazil. The raw data pulled from [Ministério da Saúde](https://covid.saude.gov.br/) and [brasil.io](https://brasil.io/dataset/covid19/caso).
+
+This repository was inspired by the [coronavirus](https://github.com/RamiKrispin/coronavirus) package repository.
+
+
+## Installation
+
+You can install the released version of coronavirusbrazil from [CRAN](https://CRAN.R-project.org) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("mralbu/coronavirusbrazil")
+```
+
+## Usage
+
+The package contains the following datasets:
+
+```{r example}
+library(coronavirusbrazil)
+
+
+data("coronavirus_br")
+head(coronavirus_br) 
+```
+
+```{r, warning=FALSE, message=FALSE}
+plot_coronavirus_br(coronavirus_br, xaxis_br = "cases", delta = TRUE, log_scale = TRUE)
+```
+
+```{r, warning=FALSE, message=FALSE}
+data("coronavirus_br_states")
+head(coronavirus_br_states) 
+```
+
+```{r, warning=FALSE}
+plot_coronavirus_states(coronavirus_br_states, filter_state = c("RJ", "SP", delta = TRUE, log_scale = TRUE))
+```
+
+
+```{r}
+data("coronavirus_br_cities")
+head(coronavirus_br_cities) 
+```
+
+There are also geospatial datasets avaiable:
+
+```{r}
+head(spatial_br_states)
+# plot(spatial_br_states)
+```
+
+```{r}
+head(spatial_br_cities)
+#plot(spatial_br_states)
+```
+
+# Data Sources
+
+- States: [Ministério da Saúde](https://covid.saude.gov.br/)
+- Cities: [brasil.io](https://brasil.io/dataset/covid19/caso)

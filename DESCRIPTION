@@ -1,0 +1,22 @@
+Package: coronavirusbrazil
+Title: The 2019 Novel Coronavirus COVID-19 (2019-nCoV) Dataset for Brazil
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Marcelo",
+           family = "Albuquerque",
+           role = c("aut", "cre"),
+           email = "marceloralbuquerque@gmail.com")
+Description: Daily updated dataset for coronavirus (covid-19) cases for Brazil.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    readr,
+    dplyr,
+    sf,
+    magrittr,
+    glue,
+    viridisLite,
+    leaflet,
+    mapview
+RoxygenNote: 7.0.2
