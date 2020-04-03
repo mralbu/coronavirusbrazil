@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-\# coronavirusbrazil
+# coronavirusbrazil
 
 <!-- badges: start -->
 
@@ -18,8 +18,8 @@ pulled from [Ministério da Saúde](https://covid.saude.gov.br/) and
 [brasil.io](https://brasil.io/dataset/covid19/caso).
 
 This repository was inspired by the
-[coronavirus](https://github.com/RamiKrispin/coronavirus) package
-repository.
+[RamiKrispin/coronavirus](https://github.com/RamiKrispin/coronavirus)
+package repository.
 
 ## Installation
 
@@ -85,12 +85,12 @@ head(coronavirus_br_cities)
 #> # A tibble: 6 x 11
 #>   date       state city  place_type cases deaths is_last estimated_popul~
 #>   <date>     <chr> <chr> <chr>      <dbl>  <dbl> <lgl>              <dbl>
-#> 1 2020-04-03 AP    Maca~ city          19      0 TRUE              503327
-#> 2 2020-04-03 PA    Abae~ city           1      0 TRUE              157698
-#> 3 2020-04-03 PA    Anan~ city           9      0 TRUE              530598
-#> 4 2020-04-03 PA    Barc~ city           1      0 TRUE              124680
-#> 5 2020-04-03 PA    Belém city          30      0 TRUE             1492745
-#> 6 2020-04-03 PA    Cast~ city           1      0 TRUE              200793
+#> 1 2020-04-03 AC    Acre~ city           9      0 TRUE               15256
+#> 2 2020-04-03 AC    Port~ city           1      0 TRUE               18504
+#> 3 2020-04-03 AC    Rio ~ city          36      0 TRUE              407319
+#> 4 2020-04-03 AM    Anori city           1      0 TRUE               21010
+#> 5 2020-04-03 AM    Boca~ city           1      0 TRUE               34308
+#> 6 2020-04-03 AM    Care~ city           1      0 TRUE               30225
 #> # ... with 3 more variables: city_ibge_code <dbl>,
 #> #   confirmed_per_100k_inhabitants <dbl>, death_rate <dbl>
 ```
@@ -98,32 +98,36 @@ head(coronavirus_br_cities)
 There are also geospatial datasets avaiable:
 
 ``` r
-head(spatial_br_states)
-#> # A tibble: 6 x 13
-#>   id    name  uf    codigo regiao geometry date       cases deaths delta_cases
-#>   <chr> <chr> <chr>  <int> <chr>  <list>   <date>     <dbl>  <dbl>       <dbl>
-#> 1 AC    Acre  AC        12 Norte  <XY>     2020-04-02    43      0           0
-#> 2 AL    Alag~ AL        27 Norde~ <XY>     2020-04-02    18      1           0
-#> 3 AM    Amaz~ AM        13 Norte  <XY>     2020-04-02   229      3          29
-#> 4 AP    Amapá AP        16 Norte  <XY>     2020-04-02    11      0           0
-#> 5 BA    Bahia BA        29 Norde~ <XY>     2020-04-02   267      3          21
-#> 6 CE    Ceará CE        23 Norde~ <XY>     2020-04-02   550     20         106
-#> # ... with 3 more variables: delta_deaths <dbl>, log_cases <dbl>,
-#> #   log_deaths <dbl>
-# plot(spatial_br_states)
+dplyr::glimpse(spatial_br_states)
+#> Observations: 27
+#> Variables: 13
+#> $ id           <chr> "AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", ...
+#> $ name         <chr> "Acre", "Alagoas", "Amazonas", "Amapá", "Bahia", "Cear...
+#> $ uf           <chr> "AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", ...
+#> $ codigo       <int> 12, 27, 13, 16, 29, 23, 53, 32, 52, 21, 31, 50, 51, 15...
+#> $ regiao       <chr> "Norte", "Nordeste", "Norte", "Norte", "Nordeste", "No...
+#> $ geometry     <list> [<-70.470805, -9.213489>, <-36.622412, -9.514914>, <-...
+#> $ date         <date> 2020-04-02, 2020-04-02, 2020-04-02, 2020-04-02, 2020-...
+#> $ cases        <dbl> 43, 18, 229, 11, 267, 550, 370, 120, 73, 71, 370, 53, ...
+#> $ deaths       <dbl> 0, 1, 3, 0, 3, 20, 4, 1, 1, 1, 4, 1, 0, 1, 1, 9, 4, 4,...
+#> $ delta_cases  <dbl> 0, 0, 29, 0, 21, 106, 15, 24, 2, 19, 56, 2, 9, 6, 1, 1...
+#> $ delta_deaths <dbl> 0, 0, 0, 0, 1, 12, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1,...
+#> $ log_cases    <dbl> 1.633468, 1.255273, 2.359835, 1.041393, 2.426511, 2.74...
+#> $ log_deaths   <dbl> -Inf, 0.0000000, 0.4771213, -Inf, 0.4771213, 1.3010300...
+#plot(spatial_br_states)
 ```
 
 ``` r
-head(spatial_br_cities)
-#> # A tibble: 6 x 7
-#>   date       city             cases deaths geometry log_cases log_deaths
-#>   <date>     <chr>            <dbl>  <dbl> <list>       <dbl>      <dbl>
-#> 1 2020-04-03 Abaetetuba           1      0 <XY>         0           -Inf
-#> 2 2020-04-02 Açailândia           1      0 <XY>         0           -Inf
-#> 3 2020-04-02 Acrelândia           8      0 <XY>         0.903       -Inf
-#> 4 2020-04-02 Açu                  1      0 <XY>         0           -Inf
-#> 5 2020-04-02 Afonso Cláudio       1      0 <XY>         0           -Inf
-#> 6 2020-04-02 Águas de Lindóia     1      0 <XY>         0           -Inf
+dplyr::glimpse(spatial_br_cities)
+#> Observations: 553
+#> Variables: 7
+#> $ date       <date> 2020-04-03, 2020-04-02, 2020-04-03, 2020-04-02, 2020-04...
+#> $ city       <chr> "Abaetetuba", "Açailândia", "Acrelândia", "Açu", "Afonso...
+#> $ cases      <dbl> 1, 1, 9, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 3, 0, 3, 3, 2, 9,...
+#> $ deaths     <dbl> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...
+#> $ geometry   <list> [<-48.87880, -1.72183>, <-47.50040, -4.94714>, <-66.897...
+#> $ log_cases  <dbl> 0.0000000, 0.0000000, 0.9542425, 0.0000000, 0.0000000, 0...
+#> $ log_deaths <dbl> -Inf, -Inf, -Inf, -Inf, -Inf, -Inf, -Inf, -Inf, -Inf, -I...
 #plot(spatial_br_states)
 ```
 

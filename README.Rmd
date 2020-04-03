@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-  # coronavirusbrazil
+# coronavirusbrazil
 
 <!-- badges: start -->
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 
 The coronavirusbrazil package provides a tidy format dataset of the 2019 Novel Coronavirus COVID-19 (2019-nCoV) epidemic for Brazil. The raw data pulled from [Ministério da Saúde](https://covid.saude.gov.br/) and [brasil.io](https://brasil.io/dataset/covid19/caso).
 
-This repository was inspired by the [coronavirus](https://github.com/RamiKrispin/coronavirus) package repository.
+This repository was inspired by the [RamiKrispin/coronavirus](https://github.com/RamiKrispin/coronavirus) package repository.
 
 
 ## Installation
@@ -69,12 +69,12 @@ head(coronavirus_br_cities)
 There are also geospatial datasets avaiable:
 
 ```{r}
-head(spatial_br_states)
-# plot(spatial_br_states)
+dplyr::glimpse(spatial_br_states)
+#plot(spatial_br_states)
 ```
 
 ```{r}
-head(spatial_br_cities)
+dplyr::glimpse(spatial_br_cities)
 #plot(spatial_br_states)
 ```
 
