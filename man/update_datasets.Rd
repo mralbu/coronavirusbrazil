@@ -4,7 +4,7 @@
 \alias{update_datasets}
 \title{Update Datasets}
 \usage{
-update_datasets()
+update_datasets(filename = NULL)
 }
 \description{
 Update coronavirus_br, coronavirus_br_states, coronavirus_br_cities, spatial_br_states, spatial_br_cities datasets
