@@ -9,15 +9,19 @@
 #' \dontrun{
 #' update_datasets()
 #' }
-update_datasets = function(){
+update_datasets = function(filename=NULL){
+
+  if (is.null(filename)){
+    filename = paste0("https://covid.saude.gov.br/assets/files/COVID19_",
+                      format(Sys.Date(), "%Y%m%d.csv"))
+  }
 
   cat("Reading https://covid.saude.gov.br dataset\n===========================================\n")
 
   coronavirus_br_states = NULL
   tryCatch({
-    coronavirus_br_states = readr::read_csv2(paste0("https://covid.saude.gov.br/assets/files/COVID19_",
-                                   format(Sys.Date(), "%Y%m%d.csv")),
-                            locale = readr::locale(date_format = "%d/%m/%Y")) %>%
+    coronavirus_br_states = read_csv2(filename,
+                              locale = locale(date_format = "%d/%m/%Y")) %>%
     dplyr::select(date=data, cases=casosAcumulados, deaths=obitosAcumulados, state=estado) %>%
     dplyr::group_by(state) %>%
     dplyr::mutate(delta_cases = cases - dplyr::lag(cases), delta_deaths = deaths - dplyr::lag(deaths)) %>%
