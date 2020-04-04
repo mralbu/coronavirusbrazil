@@ -39,8 +39,7 @@ jobs:
       - name: Install dependencies
         run: |
           install.packages("remotes")
-          install.packages(c("glue", "readr", "dplyr", "magrittr", "ggplot2"))
-          remotes::install_dev("pkgdown")
+          install.packages(c("pkgdown", "glue", "readr", "dplyr", "magrittr", "ggplot2"))
         shell: Rscript {0}
       - name: Install package
         run: R CMD INSTALL .
