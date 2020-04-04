@@ -38,8 +38,9 @@ jobs:
 
       - name: Install dependencies
         run: |
-          R -e 'install.packages("renv")'
-          R -e 'renv::restore()'        shell: Rscript {0}
+          install.packages("remotes")
+          install.packages(c("pkgdown", "glue", "readr", "dplyr", "magrittr", "ggplot2", "sf", "leaflet", "mapview", "usethis", "plotly", "shiny", "shinythemes"))
+        shell: Rscript {0}
       - name: Install package
         run: R CMD INSTALL .
       - name: Deploy package

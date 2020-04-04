@@ -20,8 +20,8 @@ update_datasets = function(filename=NULL){
 
   coronavirus_br_states = NULL
   tryCatch({
-    coronavirus_br_states = read_csv2(filename,
-                              locale = locale(date_format = "%d/%m/%Y")) %>%
+    coronavirus_br_states = readr::read_csv2(filename,
+                              locale = readr::locale(date_format = "%d/%m/%Y")) %>%
     dplyr::select(date=data, cases=casosAcumulados, deaths=obitosAcumulados, state=estado) %>%
     dplyr::group_by(state) %>%
     dplyr::mutate(delta_cases = cases - dplyr::lag(cases), delta_deaths = deaths - dplyr::lag(deaths)) %>%
@@ -105,5 +105,4 @@ update_datasets = function(filename=NULL){
   coronavirus_br %>% readr::write_csv("data-raw/coronavirus_br.csv")
   coronavirus_br_states %>% readr::write_csv("data-raw/coronavirus_states.csv")
   coronavirus_br_cities %>% readr::write_csv("data-raw/coronavirus_cities.csv")
-
 }
