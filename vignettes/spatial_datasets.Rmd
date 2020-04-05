@@ -18,15 +18,9 @@ knitr::opts_chunk$set(
 ## State COVID-19 Cases
 
 ```{r setup, message=FALSE, warning=FALSE}
-library(tidyverse)
-
 library(coronavirusbrazil)
-```
 
-
-```{r}
 data("spatial_br_states")
-
 head(spatial_br_states)
 ```
 
@@ -40,7 +34,6 @@ mapview::mapview(spatial_br_states,
 
 ```{r}
 data("spatial_br_cities")
-
 head(spatial_br_cities)
 ```
 

@@ -4,7 +4,7 @@ template:
   params:
     bootswatch: sandstone
 
-articles:
+datasets:
 - title: Datasets
   contents:
   - spatial_datasets
