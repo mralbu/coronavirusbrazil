@@ -13,9 +13,9 @@ commit](https://img.shields.io/github/last-commit/mralbu/coronavirusbrazil)](htt
 <!-- badges: end -->
 
 The coronavirusbrazil package provides a tidy format dataset of the 2019
-Novel Coronavirus COVID-19 (2019-nCoV) epidemic for Brazil. The raw data
-pulled from [Ministerio da Saúde](https://covid.saude.gov.br/) and
-[brasil.io](https://brasil.io/dataset/covid19/caso).
+Novel Coronavirus COVID-19 (2019-nCoV) epidemic for Brazil. The datasets
+were obtained from [Ministerio da Saúde](https://covid.saude.gov.br/)
+and [brasil.io](https://brasil.io/dataset/covid19/caso).
 
 This repository was inspired by the
 [RamiKrispin/coronavirus](https://github.com/RamiKrispin/coronavirus)

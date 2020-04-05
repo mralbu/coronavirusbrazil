@@ -1,0 +1,52 @@
+---
+title: "Spatial Datasets"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{spatial_datasets}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7.5
+)
+```
+
+## State COVID-19 Cases
+
+```{r setup, message=FALSE, warning=FALSE}
+library(tidyverse)
+
+library(coronavirusbrazil)
+```
+
+
+```{r}
+data("spatial_br_states")
+
+head(spatial_br_states)
+```
+
+```{r}
+mapview::mapview(spatial_br_states, 
+                 map = leaflet::leaflet() %>% leaflet::addTiles(),
+                 zcol="cases", cex="log_cases")
+```
+
+## Cities
+
+```{r}
+data("spatial_br_cities")
+
+head(spatial_br_cities)
+```
+
+```{r}
+mapview::mapview(spatial_br_cities, 
+                 map = leaflet::leaflet() %>% leaflet::addTiles(),
+                 zcol="cases", cex="log_cases")
+```
+

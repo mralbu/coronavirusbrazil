@@ -1,1 +1,25 @@
 destination: docs
+
+template:
+  params:
+    bootswatch: sandstone
+
+articles:
+- title: Datasets
+  contents:
+  - spatial_datasets
+
+reference:
+- subtitle: Datasets
+  desc: The datasets were obtained from [Ministerio da Saúde](https://covid.saude.gov.br/) and [brasil.io](https://brasil.io/dataset/covid19/caso)
+- contents:
+  - starts_with("corona")
+  - starts_with("spatial")
+  - update_datasets
+- subtitle: Plotting Functions
+  contents:
+  - starts_with("plot")
+- subtitle: Shiny App
+  contents:
+  - starts_with("app")
+  - run_app
