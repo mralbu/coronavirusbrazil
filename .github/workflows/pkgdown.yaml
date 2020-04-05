@@ -39,7 +39,7 @@ jobs:
       - name: Install dependencies
         run: |
           install.packages("remotes")
-          install.packages(c("pkgdown", "glue", "readr", "dplyr", "magrittr", "ggplot2", "sf", "leaflet", "mapview", "usethis", "plotly", "shiny", "shinythemes"))
+          install.packages(c("pkgdown", "glue", "readr", "dplyr", "magrittr", "ggplot2", "sf", "gdtools", "leaflet", "mapview", "usethis", "plotly", "shiny", "shinythemes"))
         shell: Rscript {0}
       - name: Install package
         run: R CMD INSTALL .
