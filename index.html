@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The 2019 Novel Coronavirus COVID-19 (2019-nCoV) Dataset for Brazil • coronavirusbrazil</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/sandstone/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">coronavirusbrazil</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -45,6 +45,18 @@
 </li>
 <li>
   <a href="reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="articles/spatial_datasets.html">Spatial Datasets</a>
+    </li>
+  </ul>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -72,98 +84,97 @@
 <a href="#coronavirusbrazil" class="anchor"></a>coronavirusbrazil</h1></div>
 <!-- badges: start -->
 
-<p>The coronavirusbrazil package provides a tidy format dataset of the 2019 Novel Coronavirus COVID-19 (2019-nCoV) epidemic for Brazil. The raw data pulled from <a href="https://covid.saude.gov.br/">Ministerio da SaÃºde</a> and <a href="https://brasil.io/dataset/covid19/caso">brasil.io</a>.</p>
+<p>The coronavirusbrazil package provides a tidy format dataset of the 2019 Novel Coronavirus COVID-19 (2019-nCoV) epidemic for Brazil. The datasets were obtained from <a href="https://covid.saude.gov.br/">Ministerio da Saúde</a> and <a href="https://brasil.io/dataset/covid19/caso">brasil.io</a>.</p>
 <p>This repository was inspired by the <a href="https://github.com/RamiKrispin/coronavirus">RamiKrispin/coronavirus</a> package repository.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install the released version of coronavirusbrazil from <a href="https://CRAN.R-project.org">CRAN</a> with:</p>
-<div class="sourceCode" id="cb1"><pre class="r"><span class="co"># install.packages("devtools")</span>
-<span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu">install_github</span>(<span class="st">"mralbu/coronavirusbrazil"</span>)</pre></div>
+<div class="sourceCode" id="cb1"><pre class="r"><span class="co"># install.packages("devtools")
+</span>
+<span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">install_github</a></span>(<span class="st">"mralbu/coronavirusbrazil"</span>)</pre></div>
 </div>
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
 <a href="#usage" class="anchor"></a>Usage</h2>
 <p>The package contains the following datasets:</p>
-<div class="sourceCode" id="cb2"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">coronavirusbrazil</span>)
+<div class="sourceCode" id="cb2"><pre class="r">library(coronavirusbrazil)
 
 
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"coronavirus_br"</span>)
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">coronavirus_br</span>)
-<span class="co">#&gt;         date cases deaths delta_cases delta_deaths days_gt_10 days_gt_100</span>
-<span class="co">#&gt; 1 2020-02-25     0      0          NA           NA         NA          NA</span>
-<span class="co">#&gt; 2 2020-02-26     1      0           1            0         NA          NA</span>
-<span class="co">#&gt; 3 2020-02-27     1      0           0            0         NA          NA</span>
-<span class="co">#&gt; 4 2020-02-28     1      0           0            0         NA          NA</span>
-<span class="co">#&gt; 5 2020-02-29     2      0           1            0         NA          NA</span>
-<span class="co">#&gt; 6 2020-03-01     2      0           0            0         NA          NA</span></pre></div>
+data("coronavirus_br")
+head(coronavirus_br) 
+#&gt;         date cases deaths delta_cases delta_deaths days_gt_10 days_gt_100
+#&gt; 1 2020-02-25     0      0          NA           NA         NA          NA
+#&gt; 2 2020-02-26     1      0           1            0         NA          NA
+#&gt; 3 2020-02-27     1      0           0            0         NA          NA
+#&gt; 4 2020-02-28     1      0           0            0         NA          NA
+#&gt; 5 2020-02-29     2      0           1            0         NA          NA
+#&gt; 6 2020-03-01     2      0           0            0         NA          NA</pre></div>
 <div class="sourceCode" id="cb3"><pre class="r"><span class="fu"><a href="reference/plot_coronavirus_br.html">plot_coronavirus_br</a></span>(<span class="no">coronavirus_br</span>, <span class="kw">xaxis_br</span> <span class="kw">=</span> <span class="st">"cases"</span>, <span class="kw">delta</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">log_scale</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-2-1.png" width="100%"></p>
-<div class="sourceCode" id="cb4"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"coronavirus_br_states"</span>)
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">coronavirus_br_states</span>)
-<span class="co">#&gt; # A tibble: 6 x 8</span>
-<span class="co">#&gt; # Groups:   state [1]</span>
-<span class="co">#&gt;   state date       cases deaths delta_cases delta_deaths days_gt_10 days_gt_100</span>
-<span class="co">#&gt;   &lt;chr&gt; &lt;date&gt;     &lt;dbl&gt;  &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;      &lt;dbl&gt;       &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 RO    2020-02-25     0      0           0            0         NA          NA</span>
-<span class="co">#&gt; 2 RO    2020-02-26     0      0           0            0         NA          NA</span>
-<span class="co">#&gt; 3 RO    2020-02-27     0      0           0            0         NA          NA</span>
-<span class="co">#&gt; 4 RO    2020-02-28     0      0           0            0         NA          NA</span>
-<span class="co">#&gt; 5 RO    2020-02-29     0      0           0            0         NA          NA</span>
-<span class="co">#&gt; 6 RO    2020-03-01     0      0           0            0         NA          NA</span></pre></div>
-<div class="sourceCode" id="cb5"><pre class="r"><span class="fu"><a href="reference/plot_coronavirus_states.html">plot_coronavirus_states</a></span>(<span class="no">coronavirus_br_states</span>, <span class="kw">filter_state</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"RJ"</span>, <span class="st">"SP"</span>, <span class="kw">delta</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">log_scale</span> <span class="kw">=</span> <span class="fl">TRUE</span>))
-<span class="co">#&gt; Scale for 'y' is already present. Adding another scale for 'y', which will</span>
-<span class="co">#&gt; replace the existing scale.</span></pre></div>
+<div class="sourceCode" id="cb4"><pre class="r">data("coronavirus_br_states")
+head(coronavirus_br_states) 
+#&gt; # A tibble: 6 x 8
+#&gt; # Groups:   state [1]
+#&gt;   state date       cases deaths delta_cases delta_deaths days_gt_10 days_gt_100
+#&gt;   <chr><date><dbl><dbl><dbl><dbl><dbl><dbl>
+#&gt; 1 RO    2020-02-25     0      0           0            0         NA          NA
+#&gt; 2 RO    2020-02-26     0      0           0            0         NA          NA
+#&gt; 3 RO    2020-02-27     0      0           0            0         NA          NA
+#&gt; 4 RO    2020-02-28     0      0           0            0         NA          NA
+#&gt; 5 RO    2020-02-29     0      0           0            0         NA          NA
+#&gt; 6 RO    2020-03-01     0      0           0            0         NA          NA</dbl></dbl></dbl></dbl></dbl></dbl></date></chr></pre></div>
+<div class="sourceCode" id="cb5"><pre class="r">plot_coronavirus_states(coronavirus_br_states, filter_state = c("RJ", "SP", delta = TRUE, log_scale = TRUE))
+#&gt; Scale for 'y' is already present. Adding another scale for 'y', which will
+#&gt; replace the existing scale.</pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-4-1.png" width="100%"></p>
-<div class="sourceCode" id="cb6"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"coronavirus_br_cities"</span>)
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">coronavirus_br_cities</span>)
-<span class="co">#&gt; # A tibble: 6 x 11</span>
-<span class="co">#&gt;   date       state city  place_type cases deaths is_last estimated_popul~</span>
-<span class="co">#&gt;   &lt;date&gt;     &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;      &lt;dbl&gt;  &lt;dbl&gt; &lt;lgl&gt;              &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 2020-04-03 AC    Acre~ city           9      0 TRUE               15256</span>
-<span class="co">#&gt; 2 2020-04-03 AC    Port~ city           1      0 TRUE               18504</span>
-<span class="co">#&gt; 3 2020-04-03 AC    Rio ~ city          36      0 TRUE              407319</span>
-<span class="co">#&gt; 4 2020-04-03 AL    Impo~ city           4      0 TRUE                  NA</span>
-<span class="co">#&gt; 5 2020-04-03 AL    Mace~ city          17      2 TRUE             1018948</span>
-<span class="co">#&gt; 6 2020-04-03 AL    Mare~ city           1      0 TRUE               51901</span>
-<span class="co">#&gt; # ... with 3 more variables: city_ibge_code &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   confirmed_per_100k_inhabitants &lt;dbl&gt;, death_rate &lt;dbl&gt;</span></pre></div>
+<div class="sourceCode" id="cb6"><pre class="r">data("coronavirus_br_cities")
+head(coronavirus_br_cities) 
+#&gt; # A tibble: 6 x 11
+#&gt;   date       state city  place_type cases deaths is_last estimated_popul~
+#&gt;   <date><chr><chr><chr><dbl><dbl><lgl><dbl>
+#&gt; 1 2020-04-03 AC    Acre~ city           9      0 TRUE               15256
+#&gt; 2 2020-04-03 AC    Port~ city           1      0 TRUE               18504
+#&gt; 3 2020-04-03 AC    Rio ~ city          36      0 TRUE              407319
+#&gt; 4 2020-04-03 AL    Impo~ city           4      0 TRUE                  NA
+#&gt; 5 2020-04-03 AL    Mace~ city          17      2 TRUE             1018948
+#&gt; 6 2020-04-03 AL    Mare~ city           1      0 TRUE               51901
+#&gt; # ... with 3 more variables: city_ibge_code <dbl>,
+#&gt; #   confirmed_per_100k_inhabitants <dbl>, death_rate <dbl></dbl></dbl></dbl></dbl></lgl></dbl></dbl></chr></chr></chr></date></pre></div>
 <p>There are also geospatial datasets avaiable:</p>
-<div class="sourceCode" id="cb7"><pre class="r"><span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(<span class="no">spatial_br_states</span>)
-<span class="co">#&gt; Observations: 27</span>
-<span class="co">#&gt; Variables: 13</span>
-<span class="co">#&gt; $ id           &lt;chr&gt; "AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", ...</span>
-<span class="co">#&gt; $ name         &lt;chr&gt; "Acre", "Alagoas", "Amazonas", "AmapÃ¡", "Bahia", "Cear...</span>
-<span class="co">#&gt; $ uf           &lt;chr&gt; "AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", ...</span>
-<span class="co">#&gt; $ codigo       &lt;int&gt; 12, 27, 13, 16, 29, 23, 53, 32, 52, 21, 31, 50, 51, 15...</span>
-<span class="co">#&gt; $ regiao       &lt;chr&gt; "Norte", "Nordeste", "Norte", "Norte", "Nordeste", "No...</span>
-<span class="co">#&gt; $ geometry     &lt;list&gt; [&lt;-70.470805, -9.213489&gt;, &lt;-36.622412, -9.514914&gt;, &lt;-...</span>
-<span class="co">#&gt; $ date         &lt;date&gt; 2020-04-03, 2020-04-03, 2020-04-03, 2020-04-03, 2020-...</span>
-<span class="co">#&gt; $ cases        &lt;dbl&gt; 46, 22, 260, 19, 282, 627, 402, 139, 88, 81, 397, 60, ...</span>
-<span class="co">#&gt; $ deaths       &lt;dbl&gt; 0, 2, 7, 0, 5, 22, 5, 4, 2, 1, 6, 1, 1, 1, 1, 10, 4, 4...</span>
-<span class="co">#&gt; $ delta_cases  &lt;dbl&gt; 3, 4, 31, 8, 15, 77, 32, 19, 15, 10, 27, 7, 8, 4, 8, 3...</span>
-<span class="co">#&gt; $ delta_deaths &lt;dbl&gt; 0, 1, 4, 0, 2, 2, 1, 3, 1, 0, 2, 0, 1, 0, 0, 1, 0, 0, ...</span>
-<span class="co">#&gt; $ log_cases    &lt;dbl&gt; 1.662758, 1.342423, 2.414973, 1.278754, 2.450249, 2.79...</span>
-<span class="co">#&gt; $ log_deaths   &lt;dbl&gt; -Inf, 0.3010300, 0.8450980, -Inf, 0.6989700, 1.3424227...</span>
-<span class="co">#plot(spatial_br_states)</span></pre></div>
-<div class="sourceCode" id="cb8"><pre class="r"><span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(<span class="no">spatial_br_cities</span>)
-<span class="co">#&gt; Observations: 583</span>
-<span class="co">#&gt; Variables: 7</span>
-<span class="co">#&gt; $ date       &lt;date&gt; 2020-04-03, 2020-04-03, 2020-04-03, 2020-04-03, 2020-04...</span>
-<span class="co">#&gt; $ city       &lt;chr&gt; "Abaetetuba", "AÃ§ailÃ¢ndia", "AcrelÃ¢ndia", "AÃ§u", "Adaman...</span>
-<span class="co">#&gt; $ cases      &lt;dbl&gt; 1, 1, 9, 6, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 3, 0, 3, 3, 2,...</span>
-<span class="co">#&gt; $ deaths     &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...</span>
-<span class="co">#&gt; $ geometry   &lt;list&gt; [&lt;-48.87880, -1.72183&gt;, &lt;-47.50040, -4.94714&gt;, &lt;-66.897...</span>
-<span class="co">#&gt; $ log_cases  &lt;dbl&gt; 0.0000000, 0.0000000, 0.9542425, 0.7781513, 0.0000000, 0...</span>
-<span class="co">#&gt; $ log_deaths &lt;dbl&gt; -Inf, -Inf, -Inf, -Inf, -Inf, -Inf, -Inf, -Inf, -Inf, -I...</span>
-<span class="co">#plot(spatial_br_states)</span></pre></div>
+<div class="sourceCode" id="cb7"><pre class="r">dplyr::glimpse(spatial_br_states)
+#&gt; Observations: 27
+#&gt; Variables: 13
+#&gt; $ id           <chr> "AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", ...
+#&gt; $ name         <chr> "Acre", "Alagoas", "Amazonas", "Amapá", "Bahia", "Cear...
+#&gt; $ uf           <chr> "AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", ...
+#&gt; $ codigo       <int> 12, 27, 13, 16, 29, 23, 53, 32, 52, 21, 31, 50, 51, 15...
+#&gt; $ regiao       <chr> "Norte", "Nordeste", "Norte", "Norte", "Nordeste", "No...
+#&gt; $ geometry     <list> [, ,  $ date         <date> 2020-04-03, 2020-04-03, 2020-04-03, 2020-04-03, 2020-...
+#&gt; $ cases        <dbl> 46, 22, 260, 19, 282, 627, 402, 139, 88, 81, 397, 60, ...
+#&gt; $ deaths       <dbl> 0, 2, 7, 0, 5, 22, 5, 4, 2, 1, 6, 1, 1, 1, 1, 10, 4, 4...
+#&gt; $ delta_cases  <dbl> 3, 4, 31, 8, 15, 77, 32, 19, 15, 10, 27, 7, 8, 4, 8, 3...
+#&gt; $ delta_deaths <dbl> 0, 1, 4, 0, 2, 2, 1, 3, 1, 0, 2, 0, 1, 0, 0, 1, 0, 0, ...
+#&gt; $ log_cases    <dbl> 1.662758, 1.342423, 2.414973, 1.278754, 2.450249, 2.79...
+#&gt; $ log_deaths   <dbl> -Inf, 0.3010300, 0.8450980, -Inf, 0.6989700, 1.3424227...
+#plot(spatial_br_states)</dbl></dbl></dbl></dbl></dbl></dbl></date></list></chr></int></chr></chr></chr></pre></div>
+<div class="sourceCode" id="cb8"><pre class="r">dplyr::glimpse(spatial_br_cities)
+#&gt; Observations: 583
+#&gt; Variables: 7
+#&gt; $ date       <date> 2020-04-03, 2020-04-03, 2020-04-03, 2020-04-03, 2020-04...
+#&gt; $ city       <chr> "Abaetetuba", "Açailândia", "Acrelândia", "Açu", "Adaman...
+#&gt; $ cases      <dbl> 1, 1, 9, 6, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 3, 0, 3, 3, 2,...
+#&gt; $ deaths     <dbl> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...
+#&gt; $ geometry   <list> [, ,  $ log_cases  <dbl> 0.0000000, 0.0000000, 0.9542425, 0.7781513, 0.0000000, 0...
+#&gt; $ log_deaths <dbl> -Inf, -Inf, -Inf, -Inf, -Inf, -Inf, -Inf, -Inf, -Inf, -I...
+#plot(spatial_br_states)</dbl></dbl></list></dbl></dbl></chr></date></pre></div>
 </div>
 </div>
 <div id="data-sources" class="section level1">
 <h1 class="hasAnchor">
 <a href="#data-sources" class="anchor"></a>Data Sources</h1>
 <ul>
-<li>States: <a href="https://covid.saude.gov.br/">Ministerio da SaÃºde</a>
+<li>States: <a href="https://covid.saude.gov.br/">Ministerio da Saúde</a>
 </li>
 <li>Cities: <a href="https://brasil.io/dataset/covid19/caso">brasil.io</a>
 </li>
@@ -213,7 +224,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.9000.</p>
 </div>
 
       </footer>
