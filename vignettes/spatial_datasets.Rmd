@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-## State COVID-19 Cases
+## Brazilian States COVID-19 Cases
 
 ```{r setup, message=FALSE, warning=FALSE}
 library(coronavirusbrazil)
@@ -30,7 +30,7 @@ mapview::mapview(spatial_br_states,
                  zcol="cases", cex="log_cases")
 ```
 
-## Cities
+## Brazilian Cities COVID-19 Cases
 
 ```{r}
 data("spatial_br_cities")
