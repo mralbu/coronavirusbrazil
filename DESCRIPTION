@@ -22,7 +22,8 @@ Imports:
     usethis,
     plotly,
     shiny,
-    shinythemes
+    shinythemes,
+    pkgload
 RoxygenNote: 7.0.2
 URL: https://github.com/mralbu/coronavirusbrazil
 BugReports: https://github.com/mralbu/coronavirusbrazil/issues
