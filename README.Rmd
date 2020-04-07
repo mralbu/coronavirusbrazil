@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 [![GitHub commit](https://img.shields.io/github/last-commit/mralbu/coronavirusbrazil)](https://github.com/mralbu/coronavirusbrazil/commit/master)
 <!-- badges: end -->
 
-The coronavirusbrazil package provides a tidy format dataset of the 2019 Novel Coronavirus COVID-19 (2019-nCoV) epidemic for Brazil. The datasets were obtained from [Ministerio da Saúde](https://covid.saude.gov.br/) and [brasil.io](https://brasil.io/dataset/covid19/caso).
+The coronavirusbrazil package provides a tidy format dataset of the 2019 Novel Coronavirus COVID-19 (2019-nCoV) epidemic for Brazil. The datasets were obtained from [Ministerio da Saúde](https://covid.saude.gov.br/), [brasil.io](https://brasil.io/dataset/covid19/caso) and [Secretaria de Saúde - RJ](http://painel.saude.rj.gov.br/monitoramento/covid19.html).
 
 This repository was inspired by the [RamiKrispin/coronavirus](https://github.com/RamiKrispin/coronavirus) package repository.
 
@@ -41,6 +41,7 @@ The package contains the following datasets:
 
 ```{r example}
 library(coronavirusbrazil)
+library(ggplot2)
 
 
 data("coronavirus_br")
@@ -48,7 +49,7 @@ head(coronavirus_br)
 ```
 
 ```{r, warning=FALSE, message=FALSE}
-plot_coronavirus(coronavirus_br, xaxis = "cases", yaxis = "new_cases", log_scale = TRUE)
+plot_coronavirus(coronavirus_br, xaxis = "date", yaxis = "cases", log_scale = F, linear_smooth = F)
 ```
 
 ```{r, warning=FALSE, message=FALSE}
@@ -57,7 +58,7 @@ head(coronavirus_br_states)
 ```
 
 ```{r, warning=FALSE}
-plot_coronavirus(coronavirus_br_states, yaxis = "new_cases", color = "state", filter_variable = "state", facet = "state", filter_values = c("RJ", "SP"), log_scale = TRUE)
+plot_coronavirus(coronavirus_br_states, yaxis = "percent_case_increase", color = "state", filter_variable = "state", facet = "state", filter_values = c("RJ", "SP", "DF", "CE", "RS", "MG"), log_scale = TRUE, linear_smooth = TRUE)
 ```
 
 
@@ -70,15 +71,16 @@ There are also geospatial datasets avaiable:
 
 ```{r}
 dplyr::glimpse(spatial_br_states)
-#plot(spatial_br_states)
+ggplot2::ggplot(spatial_br_states, ggplot2::aes(color=cases, size=cases)) + ggplot2::geom_sf()
 ```
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 dplyr::glimpse(spatial_br_cities)
-#plot(spatial_br_states)
+ggplot2::ggplot(spatial_br_cities, ggplot2::aes(color=cases, size=cases)) + ggplot2::geom_sf()
 ```
 
 # Data Sources
 
 - States: [Ministerio da Saúde](https://covid.saude.gov.br/)
 - Cities: [brasil.io](https://brasil.io/dataset/covid19/caso)
+- Rio de Janeiro: [Secretaria de Saúde - RJ](http://painel.saude.rj.gov.br/monitoramento/covid19.html)

@@ -14,8 +14,9 @@ commit](https://img.shields.io/github/last-commit/mralbu/coronavirusbrazil)](htt
 
 The coronavirusbrazil package provides a tidy format dataset of the 2019
 Novel Coronavirus COVID-19 (2019-nCoV) epidemic for Brazil. The datasets
-were obtained from [Ministerio da Saúde](https://covid.saude.gov.br/)
-and [brasil.io](https://brasil.io/dataset/covid19/caso).
+were obtained from [Ministerio da Saúde](https://covid.saude.gov.br/),
+[brasil.io](https://brasil.io/dataset/covid19/caso) and [Secretaria de
+Saúde - RJ](http://painel.saude.rj.gov.br/monitoramento/covid19.html).
 
 This repository was inspired by the
 [RamiKrispin/coronavirus](https://github.com/RamiKrispin/coronavirus)
@@ -37,28 +38,26 @@ The package contains the following datasets:
 
 ``` r
 library(coronavirusbrazil)
+library(ggplot2)
 
 
 data("coronavirus_br")
 head(coronavirus_br) 
-#>         date cases deaths new_cases new_deaths death_rate percent_case_increase
-#> 1 2020-02-25     0      0        NA         NA        NaN                    NA
-#> 2 2020-02-26     1      0         1          0          0                   Inf
-#> 3 2020-02-27     1      0         0          0          0                     0
-#> 4 2020-02-28     1      0         0          0          0                     0
-#> 5 2020-02-29     2      0         1          0          0                   100
-#> 6 2020-03-01     2      0         0          0          0                     0
-#>   percent_death_increase days_gt_10 days_gt_100
-#> 1                     NA         NA          NA
-#> 2                    NaN         NA          NA
-#> 3                    NaN         NA          NA
-#> 4                    NaN         NA          NA
-#> 5                    NaN         NA          NA
-#> 6                    NaN         NA          NA
+#> # A tibble: 6 x 10
+#>   date       cases deaths new_cases new_deaths death_rate percent_case_in~
+#>   <date>     <dbl>  <dbl>     <dbl>      <dbl>      <dbl>            <dbl>
+#> 1 2020-02-25     0      0        NA         NA        NaN               NA
+#> 2 2020-02-26     1      0         1          0          0              Inf
+#> 3 2020-02-27     1      0         0          0          0                0
+#> 4 2020-02-28     1      0         0          0          0                0
+#> 5 2020-02-29     2      0         1          0          0              100
+#> 6 2020-03-01     2      0         0          0          0                0
+#> # ... with 3 more variables: percent_death_increase <dbl>, days_gt_10 <dbl>,
+#> #   days_gt_100 <dbl>
 ```
 
 ``` r
-plot_coronavirus(coronavirus_br, xaxis = "cases", yaxis = "new_cases", log_scale = TRUE)
+plot_coronavirus(coronavirus_br, xaxis = "date", yaxis = "cases", log_scale = F, linear_smooth = F)
 ```
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
@@ -81,7 +80,7 @@ head(coronavirus_br_states)
 ```
 
 ``` r
-plot_coronavirus(coronavirus_br_states, yaxis = "new_cases", color = "state", filter_variable = "state", facet = "state", filter_values = c("RJ", "SP"), log_scale = TRUE)
+plot_coronavirus(coronavirus_br_states, yaxis = "percent_case_increase", color = "state", filter_variable = "state", facet = "state", filter_values = c("RJ", "SP", "DF", "CE", "RS", "MG"), log_scale = TRUE, linear_smooth = TRUE)
 #> Scale for 'y' is already present. Adding another scale for 'y', which will
 #> replace the existing scale.
 ```
@@ -129,8 +128,10 @@ dplyr::glimpse(spatial_br_states)
 #> $ percent_death_increase <dbl> NaN, 0.00000, 35.71429, 0.00000, 11.11111, 1...
 #> $ log_cases              <dbl> 1.698970, 1.491362, 2.725912, 1.531479, 2.63...
 #> $ log_deaths             <dbl> -Inf, 0.3010300, 1.2787536, 0.3010300, 1.000...
-#plot(spatial_br_states)
+ggplot2::ggplot(spatial_br_states, ggplot2::aes(color=cases, size=cases)) + ggplot2::geom_sf()
 ```
+
+<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
 
 ``` r
 dplyr::glimpse(spatial_br_cities)
@@ -140,13 +141,17 @@ dplyr::glimpse(spatial_br_cities)
 #> $ city       <chr> "Abaetetuba", "Abaiara", "Açailândia", "Acrelândia", "Aç...
 #> $ cases      <dbl> 1, 1, 1, 9, 8, 0, 1, 1, 1, 1, 1, 1, 5, 1, 1, 1, 1, 3, 1,...
 #> $ deaths     <dbl> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...
-#> $ geometry   <list> [<-48.87880, -1.72183>, <-39.04160, -7.34588>, <-47.500...
+#> $ geometry   <POINT> POINT (-48.8788 -1.72183), POINT (-39.0416 -7.34588), ...
 #> $ log_cases  <dbl> 0.0000000, 0.0000000, 0.0000000, 0.9542425, 0.9030900, -...
 #> $ log_deaths <dbl> -Inf, -Inf, -Inf, -Inf, -Inf, -Inf, -Inf, -Inf, -Inf, -I...
-#plot(spatial_br_states)
+ggplot2::ggplot(spatial_br_cities, ggplot2::aes(color=cases, size=cases)) + ggplot2::geom_sf()
 ```
+
+<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
 
 # Data Sources
 
   - States: [Ministerio da Saúde](https://covid.saude.gov.br/)
   - Cities: [brasil.io](https://brasil.io/dataset/covid19/caso)
+  - Rio de Janeiro: [Secretaria de Saúde -
+    RJ](http://painel.saude.rj.gov.br/monitoramento/covid19.html)

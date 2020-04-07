@@ -125,7 +125,6 @@ update_datasets = function(filename=NULL){
                   days_gt_100 = ifelse(date >= date_gt_100, date - date_gt_100, NA)) %>%
     dplyr::select(-date_gt_10, -date_gt_100)
 
-
   usethis::use_data(coronavirus_br, overwrite = TRUE)
   usethis::use_data(coronavirus_br_states, overwrite = TRUE)
   usethis::use_data(coronavirus_br_cities, overwrite = TRUE)
@@ -133,4 +132,28 @@ update_datasets = function(filename=NULL){
   coronavirus_br %>% readr::write_csv("data-raw/coronavirus_br.csv")
   coronavirus_br_states %>% readr::write_csv("data-raw/coronavirus_states.csv")
   coronavirus_br_cities %>% readr::write_csv("data-raw/coronavirus_cities.csv")
+
+  cat("Reading http://painel.saude.rj.gov.br/monitoramento/covid19.html dataset\n=================================================\n")
+
+  spatial_rj_neighborhoods = "https://services1.arcgis.com/OlP4dGNtIcnD3RYf/ArcGIS/rest/services/Casos_bairros_1/FeatureServer/0" %>%
+    esri2sf::esri2sf()%>%
+    dplyr::select(-Suspeitos) %>%
+    dplyr::rename(neighborhood=Bairro, cases=Confirmados, lat=Lat, lon=Long) %>%
+    dplyr::mutate(log_cases=log10(cases))
+
+  coronavirus_rj_case_metadata = "https://services1.arcgis.com/OlP4dGNtIcnD3RYf/ArcGIS/rest/services/Casos_individuais_3/FeatureServer/0" %>%
+    esri2sf::esri2sf(geomType="esriGeometryPolygon") %>%
+    dplyr::as_tibble() %>%
+    dplyr::select(-geoms) %>%
+    dplyr::mutate(dt_notific=as.Date(dt_notific, format="%d/%m/%Y"),
+                  dt_is=as.Date(dt_is, format="%d/%m/%Y"),
+                  hospitalizações=dplyr::recode(hospitalizações, S=TRUE, N=FALSE, `N/D`=NA),
+                  uti=dplyr::recode(uti, S=TRUE, N=FALSE, `N/D`=NA),
+                  óbitos=dplyr::recode(óbitos, S=TRUE, N=FALSE, `N/D`=NA))
+
+  coronavirus_rj_case_metadata %>% readr::write_csv("data-raw/coronavirus_rj_case_metadata.csv")
+  spatial_rj_neighborhoods %>% sf::write_sf("data-raw/spatial_rj_neighborhoods.gpkg")
+
+  usethis::use_data(coronavirus_rj_case_metadata, overwrite = TRUE)
+  usethis::use_data(spatial_rj_neighborhoods, overwrite = TRUE)
 }

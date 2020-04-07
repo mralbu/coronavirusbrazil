@@ -27,7 +27,9 @@ head(spatial_br_states)
 ```{r}
 mapview::mapview(spatial_br_states, 
                  map = leaflet::leaflet() %>% leaflet::addTiles(),
-                 zcol="cases", cex="log_cases")
+                 zcol="cases", cex="log_cases",
+                 layer.name="Casos",
+                 label=paste0(spatial_br_states$uf, ": ", spatial_br_states$cases))
 ```
 
 ## Brazilian Cities COVID-19 Cases
@@ -40,6 +42,7 @@ head(spatial_br_cities)
 ```{r}
 mapview::mapview(spatial_br_cities, 
                  map = leaflet::leaflet() %>% leaflet::addTiles(),
-                 zcol="cases", cex="log_cases")
+                 zcol="cases", cex="log_cases", 
+                 layer.name="Casos",
+                 label=paste0(spatial_br_cities$city, ": ", spatial_br_cities$cases))
 ```
-

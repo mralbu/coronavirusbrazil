@@ -83,4 +83,15 @@ app_server = function(input, output) {
                      label=paste0((coronavirusbrazil::spatial_br_cities %>% dplyr::filter(deaths > 0))$city, ": ", (coronavirusbrazil::spatial_br_cities %>% dplyr::filter(deaths > 0))$deaths))
   )
 
+  output$map_cases_rj = mapview::renderMapview(
+    mapview::mapview(coronavirusbrazil::spatial_rj_neighborhoods %>% dplyr::filter(lon < -30), zcol="cases", cex="log_cases", alpha=1,
+                     col.regions=viridisLite::viridis(n=256,
+                                                      alpha=0.1,
+                                                      direction=1),
+                     map = leaflet::leaflet() %>% leaflet::addTiles(),
+                     popup=NULL,
+                     layer.name="Casos",
+                     label=paste0((coronavirusbrazil::spatial_rj_neighborhoods %>% dplyr::filter(lon < -30))$neighborhood, ": ", (coronavirusbrazil::spatial_rj_neighborhoods %>% dplyr::filter(lon < -30))$cases))
+  )
+
 }

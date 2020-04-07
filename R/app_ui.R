@@ -53,7 +53,7 @@ app_ui = function() {
                       )
                     )
     ),
-    shiny::tabPanel("Mapa",
+    shiny::tabPanel("Mapas",
       shiny::tabsetPanel(
         shiny::tabPanel("Estados",
           shiny::tabsetPanel(
@@ -65,6 +65,11 @@ app_ui = function() {
           shiny::tabsetPanel(
             shiny::tabPanel("Casos", mapview::mapviewOutput("map_cases_cities")),
             shiny::tabPanel("Mortes",  mapview::mapviewOutput("map_deaths_cities"))
+          )
+        ),
+        shiny::tabPanel("RJ",
+          shiny::tabsetPanel(
+            shiny::tabPanel("Casos", mapview::mapviewOutput("map_cases_rj"))
           )
         )
       )
