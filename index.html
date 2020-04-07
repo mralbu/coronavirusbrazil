@@ -54,6 +54,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="articles/rj_cases.html">Rio de Janeiro Neighborhoods</a>
+    </li>
+    <li>
       <a href="articles/spatial_datasets.html">Spatial Datasets</a>
     </li>
   </ul>
@@ -99,25 +102,23 @@
 <a href="#usage" class="anchor"></a>Usage</h2>
 <p>The package contains the following datasets:</p>
 <div class="sourceCode" id="cb2"><pre class="r">library(coronavirusbrazil)
+library(ggplot2)
 
 
 data("coronavirus_br")
 head(coronavirus_br) 
-#&gt;         date cases deaths new_cases new_deaths death_rate percent_case_increase
-#&gt; 1 2020-02-25     0      0        NA         NA        NaN                    NA
-#&gt; 2 2020-02-26     1      0         1          0          0                   Inf
-#&gt; 3 2020-02-27     1      0         0          0          0                     0
-#&gt; 4 2020-02-28     1      0         0          0          0                     0
-#&gt; 5 2020-02-29     2      0         1          0          0                   100
-#&gt; 6 2020-03-01     2      0         0          0          0                     0
-#&gt;   percent_death_increase days_gt_10 days_gt_100
-#&gt; 1                     NA         NA          NA
-#&gt; 2                    NaN         NA          NA
-#&gt; 3                    NaN         NA          NA
-#&gt; 4                    NaN         NA          NA
-#&gt; 5                    NaN         NA          NA
-#&gt; 6                    NaN         NA          NA</pre></div>
-<div class="sourceCode" id="cb3"><pre class="r"><span class="fu"><a href="reference/plot_coronavirus.html">plot_coronavirus</a></span>(<span class="no">coronavirus_br</span>, <span class="kw">xaxis</span> <span class="kw">=</span> <span class="st">"cases"</span>, <span class="kw">yaxis</span> <span class="kw">=</span> <span class="st">"new_cases"</span>, <span class="kw">log_scale</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></div>
+#&gt; # A tibble: 6 x 10
+#&gt;   date       cases deaths new_cases new_deaths death_rate percent_case_in~
+#&gt;   <date><dbl><dbl><dbl><dbl><dbl><dbl>
+#&gt; 1 2020-02-25     0      0        NA         NA        NaN               NA
+#&gt; 2 2020-02-26     1      0         1          0          0              Inf
+#&gt; 3 2020-02-27     1      0         0          0          0                0
+#&gt; 4 2020-02-28     1      0         0          0          0                0
+#&gt; 5 2020-02-29     2      0         1          0          0              100
+#&gt; 6 2020-03-01     2      0         0          0          0                0
+#&gt; # ... with 3 more variables: percent_death_increase <dbl>, days_gt_10 <dbl>,
+#&gt; #   days_gt_100 <dbl></dbl></dbl></dbl></dbl></dbl></dbl></dbl></dbl></dbl></date></pre></div>
+<div class="sourceCode" id="cb3"><pre class="r"><span class="fu"><a href="reference/plot_coronavirus.html">plot_coronavirus</a></span>(<span class="no">coronavirus_br</span>, <span class="kw">xaxis</span> <span class="kw">=</span> <span class="st">"date"</span>, <span class="kw">yaxis</span> <span class="kw">=</span> <span class="st">"cases"</span>, <span class="kw">log_scale</span> <span class="kw">=</span> <span class="no">F</span>, <span class="kw">linear_smooth</span> <span class="kw">=</span> <span class="no">F</span>)</pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-2-1.png" width="100%"></p>
 <div class="sourceCode" id="cb4"><pre class="r">data("coronavirus_br_states")
 head(coronavirus_br_states) 
@@ -133,7 +134,7 @@ head(coronavirus_br_states)
 #&gt; 6 RO    2020-03-01     0      0         0          0        NaN              NaN
 #&gt; # ... with 3 more variables: percent_death_increase <dbl>, days_gt_10 <dbl>,
 #&gt; #   days_gt_100 <dbl></dbl></dbl></dbl></dbl></dbl></dbl></dbl></dbl></dbl></date></chr></pre></div>
-<div class="sourceCode" id="cb5"><pre class="r">plot_coronavirus(coronavirus_br_states, yaxis = "new_cases", color = "state", filter_variable = "state", facet = "state", filter_values = c("RJ", "SP"), log_scale = TRUE)
+<div class="sourceCode" id="cb5"><pre class="r">plot_coronavirus(coronavirus_br_states, yaxis = "percent_case_increase", color = "state", filter_variable = "state", facet = "state", filter_values = c("RJ", "SP", "DF", "CE", "RS", "MG"), log_scale = TRUE, linear_smooth = TRUE)
 #&gt; Scale for 'y' is already present. Adding another scale for 'y', which will
 #&gt; replace the existing scale.</pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-4-1.png" width="100%"></p>
@@ -172,7 +173,8 @@ head(coronavirus_br_cities)
 #&gt; $ percent_death_increase <dbl> NaN, 0.00000, 35.71429, 0.00000, 11.11111, 1...
 #&gt; $ log_cases              <dbl> 1.698970, 1.491362, 2.725912, 1.531479, 2.63...
 #&gt; $ log_deaths             <dbl> -Inf, 0.3010300, 1.2787536, 0.3010300, 1.000...
-#plot(spatial_br_states)</dbl></dbl></dbl></dbl></dbl></dbl></dbl></dbl></dbl></date></list></chr></int></chr></chr></chr></pre></div>
+ggplot2::ggplot(spatial_br_states, ggplot2::aes(color=cases, size=cases)) + ggplot2::geom_sf()</dbl></dbl></dbl></dbl></dbl></dbl></dbl></dbl></dbl></date></list></chr></int></chr></chr></chr></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-6-1.png" width="100%"></p>
 <div class="sourceCode" id="cb8"><pre class="r">dplyr::glimpse(spatial_br_cities)
 #&gt; Observations: 744
 #&gt; Variables: 7
@@ -180,9 +182,11 @@ head(coronavirus_br_cities)
 #&gt; $ city       <chr> "Abaetetuba", "Abaiara", "Açailândia", "Acrelândia", "Aç...
 #&gt; $ cases      <dbl> 1, 1, 1, 9, 8, 0, 1, 1, 1, 1, 1, 1, 5, 1, 1, 1, 1, 3, 1,...
 #&gt; $ deaths     <dbl> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...
-#&gt; $ geometry   <list> [, ,  $ log_cases  <dbl> 0.0000000, 0.0000000, 0.0000000, 0.9542425, 0.9030900, -...
+#&gt; $ geometry   <point> POINT (-48.8788 -1.72183), POINT (-39.0416 -7.34588), ...
+#&gt; $ log_cases  <dbl> 0.0000000, 0.0000000, 0.0000000, 0.9542425, 0.9030900, -...
 #&gt; $ log_deaths <dbl> -Inf, -Inf, -Inf, -Inf, -Inf, -Inf, -Inf, -Inf, -Inf, -I...
-#plot(spatial_br_states)</dbl></dbl></list></dbl></dbl></chr></date></pre></div>
+ggplot2::ggplot(spatial_br_cities, ggplot2::aes(color=cases, size=cases)) + ggplot2::geom_sf()</dbl></dbl></point></dbl></dbl></chr></date></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-7-1.png" width="100%"></p>
 </div>
 </div>
 <div id="data-sources" class="section level1">
@@ -192,6 +196,8 @@ head(coronavirus_br_cities)
 <li>States: <a href="https://covid.saude.gov.br/">Ministerio da Saúde</a>
 </li>
 <li>Cities: <a href="https://brasil.io/dataset/covid19/caso">brasil.io</a>
+</li>
+<li>Rio de Janeiro: <a href="http://painel.saude.rj.gov.br/monitoramento/covid19.html">Secretaria de Saúde - RJ</a>
 </li>
 </ul>
 </div>
