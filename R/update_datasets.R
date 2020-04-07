@@ -22,10 +22,13 @@ update_datasets = function(filename=NULL){
   tryCatch({
     coronavirus_br_states = readr::read_csv2(filename,
                               locale = readr::locale(date_format = "%d/%m/%Y")) %>%
-    dplyr::select(date=data, cases=casosAcumulados, deaths=obitosAcumulados, state=estado) %>%
-    dplyr::group_by(state) %>%
-    dplyr::mutate(delta_cases = cases - dplyr::lag(cases), delta_deaths = deaths - dplyr::lag(deaths)) %>%
-    dplyr::filter(date >= "2020-02-25")}, error = function(e) cat("")
+      dplyr::mutate(data=as.Date(data, origin = "1899-12-30")) %>%
+      dplyr::select(date=data, cases=casosAcumulados, deaths=obitosAcumulados, state=estado) %>%
+      dplyr::group_by(state) %>%
+      dplyr::mutate(new_cases = cases - dplyr::lag(cases), new_deaths = deaths - dplyr::lag(deaths),
+                    death_rate = deaths/cases, percent_case_increase = 100 * (cases / dplyr::lag(cases)-1),
+                    percent_death_increase = 100 * (deaths / dplyr::lag(deaths) - 1)) %>%
+      dplyr::filter(date >= "2020-02-25")}, error = function(e) cat("")
   )
   if (is.null(coronavirus_br_states)){
     coronavirus_br_states = readr::read_csv2(paste0("https://covid.saude.gov.br/assets/files/COVID19_",
@@ -33,20 +36,29 @@ update_datasets = function(filename=NULL){
                                              locale = readr::locale(date_format = "%d/%m/%Y")) %>%
       dplyr::select(date=data, cases=casosAcumulados, deaths=obitosAcumulados, state=estado) %>%
       dplyr::group_by(state) %>%
-      dplyr::mutate(delta_cases = cases - dplyr::lag(cases), delta_deaths = deaths - dplyr::lag(deaths)) %>%
+      dplyr::mutate(new_cases = cases - dplyr::lag(cases), new_deaths = deaths - dplyr::lag(deaths),
+                    death_rate = deaths/cases, percent_case_increase = 100 * (cases / dplyr::lag(cases)-1),
+                    percent_death_increase = 100 * (deaths / dplyr::lag(deaths) - 1)) %>%
       dplyr::filter(date >= "2020-02-25")
   }
 
   coronavirus_br = coronavirus_br_states %>%
     dplyr::group_by(date) %>%
     dplyr::summarise(cases=sum(cases, na.rm=T), deaths=sum(deaths, na.rm=T)) %>%
-    dplyr::mutate(delta_cases = cases - dplyr::lag(cases), delta_deaths = deaths - dplyr::lag(deaths))
+    dplyr::mutate(new_cases = cases - dplyr::lag(cases), new_deaths = deaths - dplyr::lag(deaths),
+                  death_rate = deaths/cases, percent_case_increase = 100 * (cases / dplyr::lag(cases)-1),
+                  percent_death_increase = 100 * (deaths / dplyr::lag(deaths) - 1))
 
   cat("Reading https://brasil.io/dataset/covid19 dataset\n=================================================\n")
   coronavirus_br_cities = "https://brasil.io/dataset/covid19/caso?format=csv" %>%
     readr::read_csv() %>%
     dplyr::filter(place_type=="city") %>%
-    dplyr::rename(date=date, state=state, city=city, cases=confirmed, deaths=deaths)
+    dplyr::rename(date=date, state=state, city=city, cases=confirmed, deaths=deaths) %>%
+    dplyr::arrange(city, date) %>%
+    dplyr::group_by(city) %>%
+    dplyr::mutate(new_cases = cases - dplyr::lag(cases), new_deaths = deaths - dplyr::lag(deaths),
+                  death_rate = deaths/cases, percent_case_increase = 100 * (cases / dplyr::lag(cases)-1),
+                  percent_death_increase = 100 * (deaths / dplyr::lag(deaths) - 1))
 
   cat("Reading state and city geometries\n==================================\n")
   spatial_br_states = sf::read_sf("https://raw.githubusercontent.com/fititnt/gis-dataset-brasil/master/uf/topojson/uf.json") %>%
@@ -97,6 +109,22 @@ update_datasets = function(filename=NULL){
     dplyr::mutate(days_gt_10 = ifelse(date >= date_gt_10, date - date_gt_10, NA),
                   days_gt_100 = ifelse(date >= date_gt_100, date - date_gt_100, NA)) %>%
     dplyr::select(-date_gt_10, -date_gt_100)
+
+  coronavirus_br_cities = coronavirus_br_cities %>%
+    dplyr::arrange(city, date) %>%
+    dplyr::group_by(city) %>%
+    dplyr::filter(cases >= 100) %>%
+    dplyr::summarise(date_gt_100=min(date)) %>%
+    dplyr::right_join(coronavirus_br_cities) %>%
+    dplyr::arrange(city, date) %>%
+    dplyr::group_by(city, date_gt_100) %>%
+    dplyr::filter(cases >= 10) %>%
+    dplyr::summarise(date_gt_10=min(date)) %>%
+    dplyr::right_join(coronavirus_br_cities) %>%
+    dplyr::mutate(days_gt_10 = ifelse(date >= date_gt_10, date - date_gt_10, NA),
+                  days_gt_100 = ifelse(date >= date_gt_100, date - date_gt_100, NA)) %>%
+    dplyr::select(-date_gt_10, -date_gt_100)
+
 
   usethis::use_data(coronavirus_br, overwrite = TRUE)
   usethis::use_data(coronavirus_br_states, overwrite = TRUE)

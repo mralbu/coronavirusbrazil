@@ -7,14 +7,28 @@
 app_server = function(input, output) {
   output$plot_country <- plotly::renderPlotly({
 
-    g = coronavirusbrazil::plot_coronavirus_br(coronavirusbrazil::coronavirus_br, input$xaxis_br, input$what_br, input$delta_br, input$log_scale_br, input$tendency_br)
+    g = coronavirusbrazil::plot_coronavirus(coronavirusbrazil::coronavirus_br, input$xaxis_br, input$yaxis_br,
+                                            log_scale=input$log_scale_br, linear_smooth=input$linear_smooth_br)
     g %>% plotly::ggplotly()
   })
 
   output$plot_states <- plotly::renderPlotly({
 
-    g = coronavirusbrazil::plot_coronavirus_states(coronavirusbrazil::coronavirus_br_states, input$xaxis, input$what, input$filter_uf, input$delta, input$log_scale, input$facet_uf, input$tendency)
+    g = coronavirusbrazil::plot_coronavirus(coronavirusbrazil::coronavirus_br_states,
+                                            input$xaxis_states, input$yaxis_states, color="state",
+                                            log_scale=input$log_scale_states, linear_smooth=input$linear_smooth_states,
+                                            filter_variable="state", filter_values=input$filter_uf_states,
+                                            facet=dplyr::if_else(input$facet_uf_states, "state", NULL))
+    g %>% plotly::ggplotly()
+  })
 
+  output$plot_cities <- plotly::renderPlotly({
+
+    g = coronavirusbrazil::plot_coronavirus(coronavirusbrazil::coronavirus_br_cities,
+                                            input$xaxis_cities, input$yaxis_cities, color="city",
+                                            log_scale=input$log_scale_cities, linear_smooth=input$linear_smooth_cities,
+                                            filter_variable="city", filter_values=input$filter_cities,
+                                            facet=dplyr::if_else(input$facet_cities, "city", NULL))
     g %>% plotly::ggplotly()
   })
 
@@ -41,7 +55,7 @@ app_server = function(input, output) {
                      popup=NULL,
                      layer.name="Mortes",
                      label=paste0(coronavirusbrazil::spatial_br_states$uf,
-                                  ": ", coronavirusbrazil::spatial_br_states$mortes))
+                                  ": ", coronavirusbrazil::spatial_br_states$deaths))
   )
 
   output$map_cases_cities = mapview::renderMapview(
