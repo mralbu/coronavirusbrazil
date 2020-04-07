@@ -48,7 +48,7 @@ head(coronavirus_br)
 ```
 
 ```{r, warning=FALSE, message=FALSE}
-plot_coronavirus_br(coronavirus_br, xaxis_br = "cases", delta = TRUE, log_scale = TRUE)
+plot_coronavirus(coronavirus_br, xaxis = "cases", yaxis = "new_cases", log_scale = TRUE)
 ```
 
 ```{r, warning=FALSE, message=FALSE}
@@ -57,7 +57,7 @@ head(coronavirus_br_states)
 ```
 
 ```{r, warning=FALSE}
-plot_coronavirus_states(coronavirus_br_states, filter_state = c("RJ", "SP", delta = TRUE, log_scale = TRUE))
+plot_coronavirus(coronavirus_br_states, yaxis = "new_cases", color = "state", filter_variable = "state", facet = "state", filter_values = c("RJ", "SP"), log_scale = TRUE)
 ```
 
 

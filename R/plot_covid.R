@@ -41,7 +41,7 @@ plot_coronavirus = function(coronavirus_br, xaxis="date", yaxis="cases",
   } else {
     g = df_ %>%
         ggplot2::ggplot(ggplot2::aes_string(xaxis, yaxis, color=color)) + ggplot2::geom_point() +
-        ggplot2::xlab(xaxis_label) + ggplot2::ylab(yaxis_label) + ggplot2::ylim(0, NA) + scale_color_discrete(color_label)
+        ggplot2::xlab(xaxis_label) + ggplot2::ylab(yaxis_label) + ggplot2::ylim(0, NA) + ggplot2::scale_color_discrete(color_label)
   }
 
   if (log_scale) g = g + ggplot2::scale_y_log10()
