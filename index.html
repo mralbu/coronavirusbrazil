@@ -103,69 +103,84 @@
 
 data("coronavirus_br")
 head(coronavirus_br) 
-#&gt;         date cases deaths delta_cases delta_deaths days_gt_10 days_gt_100
-#&gt; 1 2020-02-25     0      0          NA           NA         NA          NA
-#&gt; 2 2020-02-26     1      0           1            0         NA          NA
-#&gt; 3 2020-02-27     1      0           0            0         NA          NA
-#&gt; 4 2020-02-28     1      0           0            0         NA          NA
-#&gt; 5 2020-02-29     2      0           1            0         NA          NA
-#&gt; 6 2020-03-01     2      0           0            0         NA          NA</pre></div>
-<div class="sourceCode" id="cb3"><pre class="r"><span class="fu"><a href="reference/plot_coronavirus_br.html">plot_coronavirus_br</a></span>(<span class="no">coronavirus_br</span>, <span class="kw">xaxis_br</span> <span class="kw">=</span> <span class="st">"cases"</span>, <span class="kw">delta</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">log_scale</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></div>
+#&gt;         date cases deaths new_cases new_deaths death_rate percent_case_increase
+#&gt; 1 2020-02-25     0      0        NA         NA        NaN                    NA
+#&gt; 2 2020-02-26     1      0         1          0          0                   Inf
+#&gt; 3 2020-02-27     1      0         0          0          0                     0
+#&gt; 4 2020-02-28     1      0         0          0          0                     0
+#&gt; 5 2020-02-29     2      0         1          0          0                   100
+#&gt; 6 2020-03-01     2      0         0          0          0                     0
+#&gt;   percent_death_increase days_gt_10 days_gt_100
+#&gt; 1                     NA         NA          NA
+#&gt; 2                    NaN         NA          NA
+#&gt; 3                    NaN         NA          NA
+#&gt; 4                    NaN         NA          NA
+#&gt; 5                    NaN         NA          NA
+#&gt; 6                    NaN         NA          NA</pre></div>
+<div class="sourceCode" id="cb3"><pre class="r"><span class="fu"><a href="reference/plot_coronavirus.html">plot_coronavirus</a></span>(<span class="no">coronavirus_br</span>, <span class="kw">xaxis</span> <span class="kw">=</span> <span class="st">"cases"</span>, <span class="kw">yaxis</span> <span class="kw">=</span> <span class="st">"new_cases"</span>, <span class="kw">log_scale</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-2-1.png" width="100%"></p>
 <div class="sourceCode" id="cb4"><pre class="r">data("coronavirus_br_states")
 head(coronavirus_br_states) 
-#&gt; # A tibble: 6 x 8
+#&gt; # A tibble: 6 x 11
 #&gt; # Groups:   state [1]
-#&gt;   state date       cases deaths delta_cases delta_deaths days_gt_10 days_gt_100
+#&gt;   state date       cases deaths new_cases new_deaths death_rate percent_case_in~
 #&gt;   <chr><date><dbl><dbl><dbl><dbl><dbl><dbl>
-#&gt; 1 RO    2020-02-25     0      0           0            0         NA          NA
-#&gt; 2 RO    2020-02-26     0      0           0            0         NA          NA
-#&gt; 3 RO    2020-02-27     0      0           0            0         NA          NA
-#&gt; 4 RO    2020-02-28     0      0           0            0         NA          NA
-#&gt; 5 RO    2020-02-29     0      0           0            0         NA          NA
-#&gt; 6 RO    2020-03-01     0      0           0            0         NA          NA</dbl></dbl></dbl></dbl></dbl></dbl></date></chr></pre></div>
-<div class="sourceCode" id="cb5"><pre class="r">plot_coronavirus_states(coronavirus_br_states, filter_state = c("RJ", "SP", delta = TRUE, log_scale = TRUE))
+#&gt; 1 RO    2020-02-25     0      0         0          0        NaN              NaN
+#&gt; 2 RO    2020-02-26     0      0         0          0        NaN              NaN
+#&gt; 3 RO    2020-02-27     0      0         0          0        NaN              NaN
+#&gt; 4 RO    2020-02-28     0      0         0          0        NaN              NaN
+#&gt; 5 RO    2020-02-29     0      0         0          0        NaN              NaN
+#&gt; 6 RO    2020-03-01     0      0         0          0        NaN              NaN
+#&gt; # ... with 3 more variables: percent_death_increase <dbl>, days_gt_10 <dbl>,
+#&gt; #   days_gt_100 <dbl></dbl></dbl></dbl></dbl></dbl></dbl></dbl></dbl></dbl></date></chr></pre></div>
+<div class="sourceCode" id="cb5"><pre class="r">plot_coronavirus(coronavirus_br_states, yaxis = "new_cases", color = "state", filter_variable = "state", facet = "state", filter_values = c("RJ", "SP"), log_scale = TRUE)
 #&gt; Scale for 'y' is already present. Adding another scale for 'y', which will
 #&gt; replace the existing scale.</pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-4-1.png" width="100%"></p>
 <div class="sourceCode" id="cb6"><pre class="r">data("coronavirus_br_cities")
 head(coronavirus_br_cities) 
-#&gt; # A tibble: 6 x 11
-#&gt;   date       state city  place_type cases deaths is_last estimated_popul~
-#&gt;   <date><chr><chr><chr><dbl><dbl><lgl><dbl>
-#&gt; 1 2020-04-03 AC    Acre~ city           9      0 TRUE               15256
-#&gt; 2 2020-04-03 AC    Port~ city           1      0 TRUE               18504
-#&gt; 3 2020-04-03 AC    Rio ~ city          36      0 TRUE              407319
-#&gt; 4 2020-04-03 AL    Impo~ city           4      0 TRUE                  NA
-#&gt; 5 2020-04-03 AL    Mace~ city          17      2 TRUE             1018948
-#&gt; 6 2020-04-03 AL    Mare~ city           1      0 TRUE               51901
-#&gt; # ... with 3 more variables: city_ibge_code <dbl>,
-#&gt; #   confirmed_per_100k_inhabitants <dbl>, death_rate <dbl></dbl></dbl></dbl></dbl></lgl></dbl></dbl></chr></chr></chr></date></pre></div>
+#&gt; # A tibble: 6 x 17
+#&gt; # Groups:   city [1]
+#&gt;   city  date       state place_type cases deaths is_last estimated_popul~
+#&gt;   <chr><date><chr><chr><dbl><dbl><lgl><dbl>
+#&gt; 1 Abae~ 2020-03-31 PA    city           1      0 FALSE             157698
+#&gt; 2 Abae~ 2020-04-01 PA    city           1      0 FALSE             157698
+#&gt; 3 Abae~ 2020-04-02 PA    city           1      0 FALSE             157698
+#&gt; 4 Abae~ 2020-04-03 PA    city           1      0 FALSE             157698
+#&gt; 5 Abae~ 2020-04-04 PA    city           1      0 FALSE             157698
+#&gt; 6 Abae~ 2020-04-05 PA    city           1      0 FALSE             157698
+#&gt; # ... with 9 more variables: city_ibge_code <dbl>,
+#&gt; #   confirmed_per_100k_inhabitants <dbl>, death_rate <dbl>, new_cases <dbl>,
+#&gt; #   new_deaths <dbl>, percent_case_increase <dbl>,
+#&gt; #   percent_death_increase <dbl>, days_gt_10 <dbl>, days_gt_100 <dbl></dbl></dbl></dbl></dbl></dbl></dbl></dbl></dbl></dbl></dbl></lgl></dbl></dbl></chr></chr></date></chr></pre></div>
 <p>There are also geospatial datasets avaiable:</p>
 <div class="sourceCode" id="cb7"><pre class="r">dplyr::glimpse(spatial_br_states)
 #&gt; Observations: 27
-#&gt; Variables: 13
-#&gt; $ id           <chr> "AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", ...
-#&gt; $ name         <chr> "Acre", "Alagoas", "Amazonas", "Amapá", "Bahia", "Cear...
-#&gt; $ uf           <chr> "AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", ...
-#&gt; $ codigo       <int> 12, 27, 13, 16, 29, 23, 53, 32, 52, 21, 31, 50, 51, 15...
-#&gt; $ regiao       <chr> "Norte", "Nordeste", "Norte", "Norte", "Nordeste", "No...
-#&gt; $ geometry     <list> [, ,  $ date         <date> 2020-04-03, 2020-04-03, 2020-04-03, 2020-04-03, 2020-...
-#&gt; $ cases        <dbl> 46, 22, 260, 19, 282, 627, 402, 139, 88, 81, 397, 60, ...
-#&gt; $ deaths       <dbl> 0, 2, 7, 0, 5, 22, 5, 4, 2, 1, 6, 1, 1, 1, 1, 10, 4, 4...
-#&gt; $ delta_cases  <dbl> 3, 4, 31, 8, 15, 77, 32, 19, 15, 10, 27, 7, 8, 4, 8, 3...
-#&gt; $ delta_deaths <dbl> 0, 1, 4, 0, 2, 2, 1, 3, 1, 0, 2, 0, 1, 0, 0, 1, 0, 0, ...
-#&gt; $ log_cases    <dbl> 1.662758, 1.342423, 2.414973, 1.278754, 2.450249, 2.79...
-#&gt; $ log_deaths   <dbl> -Inf, 0.3010300, 0.8450980, -Inf, 0.6989700, 1.3424227...
-#plot(spatial_br_states)</dbl></dbl></dbl></dbl></dbl></dbl></date></list></chr></int></chr></chr></chr></pre></div>
+#&gt; Variables: 16
+#&gt; $ id                     <chr> "AC", "AL", "AM", "AP", "BA", "CE", "DF", "E...
+#&gt; $ name                   <chr> "Acre", "Alagoas", "Amazonas", "Amapá", "Bah...
+#&gt; $ uf                     <chr> "AC", "AL", "AM", "AP", "BA", "CE", "DF", "E...
+#&gt; $ codigo                 <int> 12, 27, 13, 16, 29, 23, 53, 32, 52, 21, 31, ...
+#&gt; $ regiao                 <chr> "Norte", "Nordeste", "Norte", "Norte", "Nord...
+#&gt; $ geometry               <list> [,  $ date                   <date> 2020-04-06, 2020-04-06, 2020-04-06, 2020-04...
+#&gt; $ cases                  <dbl> 50, 31, 532, 34, 431, 1013, 473, 194, 119, 1...
+#&gt; $ deaths                 <dbl> 0, 2, 19, 2, 10, 29, 10, 6, 5, 2, 9, 1, 1, 3...
+#&gt; $ new_cases              <dbl> 2, 3, 115, 5, 30, 190, 5, 28, 4, 37, 27, 1, ...
+#&gt; $ new_deaths             <dbl> 0, 0, 5, 0, 1, 3, 3, 0, 2, 0, 3, 0, 0, 2, 0,...
+#&gt; $ death_rate             <dbl> 0.00000000, 0.06451613, 0.03571429, 0.058823...
+#&gt; $ percent_case_increase  <dbl> 4.166667, 10.714286, 27.577938, 17.241379, 7...
+#&gt; $ percent_death_increase <dbl> NaN, 0.00000, 35.71429, 0.00000, 11.11111, 1...
+#&gt; $ log_cases              <dbl> 1.698970, 1.491362, 2.725912, 1.531479, 2.63...
+#&gt; $ log_deaths             <dbl> -Inf, 0.3010300, 1.2787536, 0.3010300, 1.000...
+#plot(spatial_br_states)</dbl></dbl></dbl></dbl></dbl></dbl></dbl></dbl></dbl></date></list></chr></int></chr></chr></chr></pre></div>
 <div class="sourceCode" id="cb8"><pre class="r">dplyr::glimpse(spatial_br_cities)
-#&gt; Observations: 583
+#&gt; Observations: 744
 #&gt; Variables: 7
-#&gt; $ date       <date> 2020-04-03, 2020-04-03, 2020-04-03, 2020-04-03, 2020-04...
-#&gt; $ city       <chr> "Abaetetuba", "Açailândia", "Acrelândia", "Açu", "Adaman...
-#&gt; $ cases      <dbl> 1, 1, 9, 6, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 3, 0, 3, 3, 2,...
+#&gt; $ date       <date> 2020-04-06, 2020-04-04, 2020-04-06, 2020-04-06, 2020-04...
+#&gt; $ city       <chr> "Abaetetuba", "Abaiara", "Açailândia", "Acrelândia", "Aç...
+#&gt; $ cases      <dbl> 1, 1, 1, 9, 8, 0, 1, 1, 1, 1, 1, 1, 5, 1, 1, 1, 1, 3, 1,...
 #&gt; $ deaths     <dbl> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...
-#&gt; $ geometry   <list> [, ,  $ log_cases  <dbl> 0.0000000, 0.0000000, 0.9542425, 0.7781513, 0.0000000, 0...
+#&gt; $ geometry   <list> [, ,  $ log_cases  <dbl> 0.0000000, 0.0000000, 0.0000000, 0.9542425, 0.9030900, -...
 #&gt; $ log_deaths <dbl> -Inf, -Inf, -Inf, -Inf, -Inf, -Inf, -Inf, -Inf, -Inf, -I...
 #plot(spatial_br_states)</dbl></dbl></list></dbl></dbl></chr></date></pre></div>
 </div>
