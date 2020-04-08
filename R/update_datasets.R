@@ -2,6 +2,7 @@
 #'
 #'  Update coronavirus_br, coronavirus_br_states, coronavirus_br_cities, spatial_br_states, spatial_br_cities datasets
 #'  Data Sources: https://coronavirus.saude.gov.br/ and https://brasil.io/dateset/coronavirus19/
+#'  As Ministerio da Saude keeps changing its data format everyday, manual daily adjustments may be necessary
 #'
 #' @export
 #'
@@ -9,7 +10,7 @@
 #' \dontrun{
 #' update_datasets()
 #' }
-update_datasets = function(filename=NULL){
+update_datasets = function(filename="data-raw/COVID19_MinisterioDaSaude.csv"){
 
   if (is.null(filename)){
     filename = paste0("https://covid.saude.gov.br/assets/files/COVID19_",
@@ -21,9 +22,9 @@ update_datasets = function(filename=NULL){
   coronavirus_br_states = NULL
   tryCatch({
     coronavirus_br_states = readr::read_csv2(filename,
-                              locale = readr::locale(date_format = "%d/%m/%Y")) %>%
-      dplyr::mutate(data=as.Date(data, origin = "1899-12-30")) %>%
-      dplyr::select(date=data, cases=casosAcumulados, deaths=obitosAcumulados, state=estado) %>%
+                              locale = readr::locale(encoding = "latin1", date_format = "%d/%m/%Y")) %>%
+      #::mutate(data=as.Date(data, origin = "1899-12-30")) %>%
+      dplyr::select(date=date, cases=casosAcumulados, deaths=obitosAcumulados, state=sigla) %>%
       dplyr::group_by(state) %>%
       dplyr::mutate(new_cases = cases - dplyr::lag(cases), new_deaths = deaths - dplyr::lag(deaths),
                     death_rate = deaths/cases, percent_case_increase = 100 * (cases / dplyr::lag(cases)-1),
