@@ -81,8 +81,6 @@ head(coronavirus_br_states)
 
 ``` r
 plot_coronavirus(coronavirus_br_states, yaxis = "percent_case_increase", color = "state", filter_variable = "state", facet = "state", filter_values = c("RJ", "SP", "DF", "CE", "RS", "MG"), log_scale = TRUE, linear_smooth = TRUE)
-#> Scale for 'y' is already present. Adding another scale for 'y', which will
-#> replace the existing scale.
 ```
 
 <img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
