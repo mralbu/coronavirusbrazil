@@ -24,7 +24,7 @@ update_datasets = function(filename="data-raw/COVID19_MinisterioDaSaude.csv"){
     coronavirus_br_states = readr::read_csv2(filename,
                               locale = readr::locale(encoding = "latin1", date_format = "%d/%m/%Y")) %>%
       #::mutate(data=as.Date(data, origin = "1899-12-30")) %>%
-      dplyr::select(date=data, cases=casosAcumulados, deaths=obitosAcumulados, state=sigla) %>%
+      dplyr::select(date=date, cases=cases, deaths=deaths, state=sigla) %>%
       dplyr::group_by(state) %>%
       dplyr::mutate(new_cases = cases - dplyr::lag(cases), new_deaths = deaths - dplyr::lag(deaths),
                     death_rate = deaths/cases, percent_case_increase = 100 * (cases / dplyr::lag(cases)-1),

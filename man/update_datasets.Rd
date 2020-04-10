@@ -4,11 +4,12 @@
 \alias{update_datasets}
 \title{Update Datasets}
 \usage{
-update_datasets(filename = NULL)
+update_datasets(filename = "data-raw/COVID19_MinisterioDaSaude.csv")
 }
 \description{
 Update coronavirus_br, coronavirus_br_states, coronavirus_br_cities, spatial_br_states, spatial_br_cities datasets
  Data Sources: https://coronavirus.saude.gov.br/ and https://brasil.io/dateset/coronavirus19/
+ As Ministerio da Saude keeps changing its data format everyday, manual daily adjustments may be necessary
 }
 \examples{
 \dontrun{
