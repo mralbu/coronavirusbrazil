@@ -94,6 +94,7 @@ update_datasets = function(filename="data-raw/COVID19_MinisterioDaSaude.csv"){
     sf::st_centroid() %>%
     dplyr::select(country=name) %>%
     dplyr::filter(country!="United States of America") %>%
+    dplyr::mutate(country=ifelse(country=="South Korea", "Korea, South", country)) %>%
     rbind(sf::st_sf(country="US", geometry = sf::st_sfc(sf::st_point(c(-96, 39))), crs = sf::st_crs(.))) %>%
     dplyr::inner_join(coronavirus_world %>%
                         dplyr::group_by(country) %>%
