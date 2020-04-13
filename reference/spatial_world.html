@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Update Datasets — update_datasets • coronavirusbrazil</title>
+<title>Spatial Dataset of World Cases — spatial_world • coronavirusbrazil</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,8 @@
 
 
 
-<meta property="og:title" content="Update Datasets — update_datasets" />
-<meta property="og:description" content="Update coronavirus_br, coronavirus_br_states, coronavirus_br_cities, spatial_br_states, spatial_br_cities datasets
- Data Sources: https://coronavirus.saude.gov.br/ and https://brasil.io/dateset/coronavirus19/
- As Ministerio da Saude keeps changing its data format everyday, manual daily adjustments may be necessary" />
+<meta property="og:title" content="Spatial Dataset of World Cases — spatial_world" />
+<meta property="og:description" content="Spatial summary of the Coronavirus (COVID-19) world cases" />
 
 
 
@@ -125,25 +123,30 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Update Datasets</h1>
-    <small class="dont-index">Source: <a href='https://github.com/mralbu/coronavirusbrazil/blob/master/R/update_datasets.R'><code>R/update_datasets.R</code></a></small>
-    <div class="hidden name"><code>update_datasets.Rd</code></div>
+    <h1>Spatial Dataset of World Cases</h1>
+    <small class="dont-index">Source: <a href='https://github.com/mralbu/coronavirusbrazil/blob/master/R/datasets.R'><code>R/datasets.R</code></a></small>
+    <div class="hidden name"><code>spatial_world.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Update coronavirus_br, coronavirus_br_states, coronavirus_br_cities, spatial_br_states, spatial_br_cities datasets
- Data Sources: https://coronavirus.saude.gov.br/ and https://brasil.io/dateset/coronavirus19/
- As Ministerio da Saude keeps changing its data format everyday, manual daily adjustments may be necessary</p>
+    <p>Spatial summary of the Coronavirus (COVID-19) world cases</p>
     </div>
 
-    <pre class="usage"><span class='fu'>update_datasets</span>(<span class='kw'>filename</span> <span class='kw'>=</span> <span class='st'>"data-raw/COVID19_MinisterioDaSaude.csv"</span>)</pre>
+    <pre class="usage"><span class='no'>spatial_world</span></pre>
 
 
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+
+    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
+
+    <p><a href='https://github.com/RamiKrispin/coronavirus'>RamiKrispin/coronavirus</a></p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The spatial dataset contains world cases of covid-19</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'>update_datasets</span>()
-}</div></pre>
+    <pre class="examples"><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>spatial_world</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
