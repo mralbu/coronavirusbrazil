@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 [![GitHub commit](https://img.shields.io/github/last-commit/mralbu/coronavirusbrazil)](https://github.com/mralbu/coronavirusbrazil/commit/master)
 <!-- badges: end -->
 
-The coronavirusbrazil package provides a tidy format dataset of the 2019 Novel Coronavirus COVID-19 (2019-nCoV) epidemic for Brazil. The datasets were obtained from [Ministerio da Saúde](https://covid.saude.gov.br/), [brasil.io](https://brasil.io/dataset/covid19/caso) and [Secretaria de Saúde - RJ](http://painel.saude.rj.gov.br/monitoramento/covid19.html).
+The coronavirusbrazil package provides a tidy format dataset of the 2019 Novel Coronavirus COVID-19 (2019-nCoV) epidemic for Brazil. The datasets were obtained from [RamiKrispin/coronavirus](https://github.com/RamiKrispin/coronavirus), [Ministerio da Saúde](https://covid.saude.gov.br/), [brasil.io](https://brasil.io/dataset/covid19/caso) and [Secretaria de Saúde - RJ](http://painel.saude.rj.gov.br/monitoramento/covid19.html).
 
 This repository was inspired by the [RamiKrispin/coronavirus](https://github.com/RamiKrispin/coronavirus) package repository.
 
@@ -81,6 +81,7 @@ ggplot2::ggplot(spatial_br_cities, ggplot2::aes(color=cases, size=cases)) + ggpl
 
 # Data Sources
 
+- Countries: [RamiKrispin/coronavirus](https://github.com/RamiKrispin/coronavirus)
 - States: [Ministerio da Saúde](https://covid.saude.gov.br/)
 - Cities: [brasil.io](https://brasil.io/dataset/covid19/caso)
 - Rio de Janeiro: [Secretaria de Saúde - RJ](http://painel.saude.rj.gov.br/monitoramento/covid19.html)

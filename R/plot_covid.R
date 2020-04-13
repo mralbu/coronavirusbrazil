@@ -15,7 +15,7 @@
 #' @export
 plot_coronavirus = function(coronavirus_br, xaxis="date", yaxis="cases",
                             color=NULL, log_scale=FALSE, linear_smooth=FALSE,
-                            filter_variable=NULL, filter_values=NULL, facet=NULL){
+                            filter_variable=NULL, filter_values=NULL, facet=NA){
 
   # Create yaxis_label and xaxis_label
   yaxis_dict = list(cases = "Casos Acumulados", deaths = "Mortes Acumuladas", new_cases = "Variacao de Casos", new_deaths = "Variacao de Mortes", death_rate = "Mortalidade", percent_case_increase = "Variação Percentual de Casos (%)", percent_death_increase = "Variação Percentual de Mortes (%)")
@@ -30,7 +30,7 @@ plot_coronavirus = function(coronavirus_br, xaxis="date", yaxis="cases",
   }
 
   # Filter dates for death related cases
-  if (yaxis == "cases" | yaxis == "new_cases" | yaxis == "percent_case_increase" | color=="country") df_ = coronavirus_br else df_ = coronavirus_br %>% dplyr::filter(date >= "2020-03-16")
+  df_ = dplyr::filter(coronavirus_br, !!as.symbol(yaxis) > 0)
 
   if (!is.null(filter_values)) df_ = dplyr::filter(df_, !!as.symbol(filter_variable) %in% filter_values) else df_ = df_
 
@@ -47,7 +47,7 @@ plot_coronavirus = function(coronavirus_br, xaxis="date", yaxis="cases",
   if (log_scale) g = g + ggplot2::scale_y_log10()
   if (linear_smooth) g = g + ggplot2::stat_smooth(method="lm")
   if (xaxis == "cases") g = g + ggplot2::scale_x_log10() + ggplot2::xlab(ifelse(xaxis=="cases", "Casos Acumulados", "Mortes"))
-  if (!is.na(facet) & !is.null(filter_values)) g = g + ggplot2::facet_wrap({facet})
+  if (!is.null(facet) & !is.na(facet) & !is.null(filter_values)) g = g + ggplot2::facet_wrap({facet})
 
   g
 }
