@@ -1,3 +1,29 @@
+#' The Coronavirus COVID-19 World Dataset
+#'
+#' @description  Daily summary of the Coronavirus (COVID-19) cases in Brazil
+#'
+#' @format A data.frame object
+#' \describe{
+#'   \item{date}{Date}
+#'   \item{cases}{Confirmed Cases}
+#'   \item{deaths}{Deaths}
+#'   \item{new_cases}{Confirmed Cases daily variation}
+#'   \item{new_deaths}{Deaths daily variation}
+#'   \item{days_gt_10}{Days since 10th Confirmed Case}
+#'   \item{days_gt_100}{Days since 100th Confirmed Case}
+#'   \item{death_rate}{Confirmed Cases / Deaths}
+#'   \item{percent_case_increase}{Percentage daily increase in cases}
+#'   \item{percent_death_increase}{Percentage daily increase in deaths}
+#' }
+#' @source \href{https://covid.saude.gov.br}{Ministerio da Saude}
+#' @keywords datasets coronavirus_br COVID19
+#' @details The dataset contains the daily summary of world coronavirus cases (confirmed cases and deaths)
+#' @examples
+#'
+#' data(coronavirus_world)
+#'
+"coronavirus_world"
+
 #' The Coronavirus COVID-19 Brazil Dataset
 #'
 #' @description  Daily summary of the Coronavirus (COVID-19) cases in Brazil
@@ -174,3 +200,24 @@
 #' data(spatial_br_states)
 #'
 "spatial_br_states"
+
+#' Spatial Dataset of World Cases
+#'
+#' @description  Spatial summary of the Coronavirus (COVID-19) world cases
+#'
+#' @format A spatial data.frame object (sf)
+#' \describe{
+#'   \item{country}{country}
+#'   \item{date}Date}
+#'   \item{cases}{Confirmed COVID-19 cases}
+#'   \item{deaths}{COVID-19 deaths}
+#'   \item{geoms}{Simple Features geometries}
+#' }
+#' @source \href{https://github.com/RamiKrispin/coronavirus}{RamiKrispin/coronavirus}
+#' @keywords datasets coronavirus_br COVID19
+#' @details The spatial dataset contains world cases of covid-19
+#' @examples
+#'
+#' data(spatial_world)
+#'
+"spatial_world"

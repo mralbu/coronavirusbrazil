@@ -30,7 +30,7 @@ plot_coronavirus = function(coronavirus_br, xaxis="date", yaxis="cases",
   }
 
   # Filter dates for death related cases
-  if (yaxis == "cases" | yaxis == "new_cases" | yaxis == "percent_case_increase") df_ = coronavirus_br else df_ = coronavirus_br %>% dplyr::filter(date >= "2020-03-16")
+  if (yaxis == "cases" | yaxis == "new_cases" | yaxis == "percent_case_increase" | color=="country") df_ = coronavirus_br else df_ = coronavirus_br %>% dplyr::filter(date >= "2020-03-16")
 
   if (!is.null(filter_values)) df_ = dplyr::filter(df_, !!as.symbol(filter_variable) %in% filter_values) else df_ = df_
 
@@ -47,7 +47,7 @@ plot_coronavirus = function(coronavirus_br, xaxis="date", yaxis="cases",
   if (log_scale) g = g + ggplot2::scale_y_log10()
   if (linear_smooth) g = g + ggplot2::stat_smooth(method="lm")
   if (xaxis == "cases") g = g + ggplot2::scale_x_log10() + ggplot2::xlab(ifelse(xaxis=="cases", "Casos Acumulados", "Mortes"))
-  if (!is.null(facet) & !is.null(filter_values)) g = g + ggplot2::facet_wrap({facet})
+  if (!is.na(facet) & !is.null(filter_values)) g = g + ggplot2::facet_wrap({facet})
 
   g
 }

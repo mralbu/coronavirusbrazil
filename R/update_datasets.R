@@ -23,7 +23,7 @@ update_datasets = function(filename="data-raw/COVID19_MinisterioDaSaude.csv"){
   tryCatch({
     coronavirus_br_states = readr::read_csv2(filename,
                               locale = readr::locale(encoding = "latin1", date_format = "%d/%m/%Y")) %>%
-      dplyr::select(date=data, cases=casosAcumulados, deaths=obitosAcumulados, state=estado) %>%
+      dplyr::select(date=3, cases=5, deaths=7, state=2) %>%
       dplyr::group_by(state) %>%
       dplyr::mutate(new_cases = cases - dplyr::lag(cases), new_deaths = deaths - dplyr::lag(deaths),
                     death_rate = deaths/cases, percent_case_increase = 100 * (cases / dplyr::lag(cases)-1),
@@ -48,6 +48,21 @@ update_datasets = function(filename="data-raw/COVID19_MinisterioDaSaude.csv"){
     dplyr::mutate(new_cases = cases - dplyr::lag(cases), new_deaths = deaths - dplyr::lag(deaths),
                   death_rate = deaths/cases, percent_case_increase = 100 * (cases / dplyr::lag(cases)-1),
                   percent_death_increase = 100 * (deaths / dplyr::lag(deaths) - 1))
+
+  devtools::install_github("RamiKrispin/coronavirus")
+
+  coronavirus_world = coronavirus::coronavirus %>%
+    dplyr::group_by(Country.Region, date, type) %>%
+    dplyr::summarize(cases=sum(cases, na.rm=T)) %>%
+    tidyr::pivot_wider(names_from = type, values_from = cases) %>%
+    dplyr::group_by(Country.Region) %>%
+    dplyr::mutate(country=Country.Region, new_cases=confirmed, cases=cumsum(confirmed), new_deaths=death, deaths=cumsum(death),
+                  death_rate = deaths/cases, percent_case_increase = 100 * (cases / dplyr::lag(cases)-1),
+                  percent_death_increase = 100 * (deaths / dplyr::lag(deaths) - 1)) %>%
+    dplyr::ungroup() %>%
+    dplyr::select(-Country.Region, -confirmed, -recovered, -death) %>%
+    dplyr::filter(country != "Brazil") %>%
+    dplyr::bind_rows(coronavirus_br %>% dplyr::mutate(country="Brazil"))
 
   cat("Reading https://brasil.io/dataset/covid19 dataset\n=================================================\n")
   coronavirus_br_cities = "https://brasil.io/dataset/covid19/caso?format=csv" %>%
@@ -75,10 +90,25 @@ update_datasets = function(filename="data-raw/COVID19_MinisterioDaSaude.csv"){
     dplyr::select(date, city, cases, deaths, geometry) %>%
     dplyr::mutate(log_cases = log10(cases), log_deaths = log10(deaths))
 
+  spatial_world = sf::read_sf("https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json") %>%
+    sf::st_centroid() %>%
+    dplyr::select(country=name) %>%
+    dplyr::filter(country!="United States of America") %>%
+    rbind(sf::st_sf(country="US", geometry = sf::st_sfc(sf::st_point(c(-96, 39))), crs = sf::st_crs(.))) %>%
+    dplyr::inner_join(coronavirus_world %>%
+                        dplyr::group_by(country) %>%
+                        dplyr::top_n(1, wt=date) %>%
+                        dplyr::ungroup() %>%
+                        dplyr::select(country, cases, deaths) %>%
+                        dplyr::mutate(log_cases=log10(cases), log_deaths=log10(deaths))
+    )
+
   usethis::use_data(spatial_br_states, overwrite = TRUE)
   usethis::use_data(spatial_br_cities, overwrite = TRUE)
+  usethis::use_data(spatial_world, overwrite = TRUE)
   sf::write_sf(spatial_br_states, "data-raw/spatial_br_states.gpkg")
   sf::write_sf(spatial_br_cities, "data-raw/spatial_br_cities.gpkg")
+  sf::write_sf(spatial_world, "data-raw/spatial_world.gpkg")
 
   date_gt_100_df = coronavirus_br %>%
     dplyr::arrange(date) %>%
@@ -91,6 +121,26 @@ update_datasets = function(filename="data-raw/COVID19_MinisterioDaSaude.csv"){
 
   coronavirus_br = coronavirus_br %>%
     dplyr::mutate(date_gt_10 = date_gt_10_df$date_gt_10, date_gt_100 = date_gt_100_df$date_gt_100) %>%
+    dplyr::mutate(days_gt_10 = ifelse(date >= date_gt_10, date - date_gt_10, NA),
+                  days_gt_100 = ifelse(date >= date_gt_100, date - date_gt_100, NA)) %>%
+    dplyr::select(-date_gt_10, -date_gt_100)
+
+  date_gt_100_df = coronavirus_world %>%
+    group_by(country) %>%
+    dplyr::arrange(date) %>%
+    dplyr::filter(cases >= 100) %>%
+    dplyr::summarise(date_gt_100=min(date)) %>%
+    ungroup()
+  date_gt_10_df = coronavirus_world %>%
+    group_by(country) %>%
+    dplyr::arrange(date) %>%
+    dplyr::filter(cases >= 10) %>%
+    dplyr::summarise(date_gt_10=min(date)) %>%
+    ungroup()
+
+  coronavirus_world = coronavirus_world %>%
+    dplyr::left_join(date_gt_100_df) %>%
+    dplyr::left_join(date_gt_10_df) %>%
     dplyr::mutate(days_gt_10 = ifelse(date >= date_gt_10, date - date_gt_10, NA),
                   days_gt_100 = ifelse(date >= date_gt_100, date - date_gt_100, NA)) %>%
     dplyr::select(-date_gt_10, -date_gt_100)
@@ -126,20 +176,21 @@ update_datasets = function(filename="data-raw/COVID19_MinisterioDaSaude.csv"){
     dplyr::select(-date_gt_10, -date_gt_100)
 
   usethis::use_data(coronavirus_br, overwrite = TRUE)
+  usethis::use_data(coronavirus_world, overwrite = TRUE)
   usethis::use_data(coronavirus_br_states, overwrite = TRUE)
   usethis::use_data(coronavirus_br_cities, overwrite = TRUE)
 
   coronavirus_br %>% readr::write_csv("data-raw/coronavirus_br.csv")
+  coronavirus_world %>% readr::write_csv("data-raw/coronavirus_world.csv")
   coronavirus_br_states %>% readr::write_csv("data-raw/coronavirus_states.csv")
   coronavirus_br_cities %>% readr::write_csv("data-raw/coronavirus_cities.csv")
 
   cat("Reading http://painel.saude.rj.gov.br/monitoramento/covid19.html dataset\n=================================================\n")
 
-  spatial_rj_neighborhoods = "https://services1.arcgis.com/OlP4dGNtIcnD3RYf/ArcGIS/rest/services/Casos_bairros_1/FeatureServer/0" %>%
-    esri2sf::esri2sf()%>%
-    dplyr::select(-Suspeitos) %>%
-    dplyr::rename(neighborhood=Bairro, cases=Confirmados, lat=Lat, lon=Long) %>%
-    dplyr::mutate(log_cases=log10(cases))
+  spatial_rj_neighborhoods = "https://services1.arcgis.com/OlP4dGNtIcnD3RYf/ArcGIS/rest/services/Casos_bairros_2/FeatureServer/0" %>%
+    esri2sf::esri2sf() %>%
+    dplyr::rename(neighborhood=Bairro, cases=Confirmados, deaths=Óbitos, lat=Lat, lon=Long) %>%
+    dplyr::mutate(log_cases=log10(cases), log_deaths=log10(deaths))
 
   coronavirus_rj_case_metadata = "https://services1.arcgis.com/OlP4dGNtIcnD3RYf/ArcGIS/rest/services/Casos_individuais_3/FeatureServer/0" %>%
     esri2sf::esri2sf(geomType="esriGeometryPolygon") %>%

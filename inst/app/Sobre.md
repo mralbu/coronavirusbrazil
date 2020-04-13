@@ -1,5 +1,6 @@
 # Fontes dos Dados
 
+- Países: [RamiKrispin/coronavirus](https://github.com/RamiKrispin/coronavirus)
 - Estados: [Ministério da Saúde](https://covid.saude.gov.br/)
 - Cidades: [brasil.io](https://brasil.io/dataset/covid19/caso)
 - Rio de Janeiro: [Secretaria de Saúde - RJ](http://painel.saude.rj.gov.br/monitoramento/covid19.html)
