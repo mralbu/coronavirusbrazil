@@ -42,7 +42,7 @@ app_ui = function() {
     shiny::tabPanel("Cidades",
                     shiny::sidebarLayout(
                       shiny::sidebarPanel(
-                        shiny::selectInput("yaxis_cities", "Eixo y", choices = list(Casos="cases", Mortes="deaths", `Variação de Casos`="new_cases", `Variação de Mortes`="new_deaths", `Variação de Casos (%)`="percent_case_increase", `Variação de Mortes (%)`="percent_death_increase")),
+                        shiny::selectInput("yaxis_cities", "Eixo y", choices = list(Casos="cases", Mortes="deaths", Mortalidade="death_rate", `Variação de Casos`="new_cases", `Variação de Mortes`="new_deaths", `Variação de Casos (%)`="percent_case_increase", `Variação de Mortes (%)`="percent_death_increase")),
                         shiny::selectInput("xaxis_cities", "Eixo X", choices = list(Data="date", `Dias depois de 10 Casos`="days_gt_10",
                                                                                     `Dias depois de 100 Casos`="days_gt_100", `Casos Acumulados`="cases")),
                         shiny::selectInput("filter_cities", "Cidades", multiple = TRUE, choices = sort(unique(coronavirusbrazil::coronavirus_br_cities$city)), selected = c("Rio de Janeiro", "São Paulo")),
