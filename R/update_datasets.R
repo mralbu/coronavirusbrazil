@@ -49,7 +49,7 @@ update_datasets = function(filename="data-raw/COVID19_MinisterioDaSaude.csv"){
                   death_rate = deaths/cases, percent_case_increase = 100 * (cases / dplyr::lag(cases)-1),
                   percent_death_increase = 100 * (deaths / dplyr::lag(deaths) - 1))
 
-  devtools::install_github("RamiKrispin/coronavirus")
+  devtools::install_github("RamiKrispin/coronavirus", dependencies = F)
 
   coronavirus_world = coronavirus::coronavirus %>%
     dplyr::group_by(Country.Region, date, type) %>%
@@ -95,6 +95,11 @@ update_datasets = function(filename="data-raw/COVID19_MinisterioDaSaude.csv"){
     dplyr::select(country=name) %>%
     dplyr::filter(country!="United States of America") %>%
     dplyr::mutate(country=ifelse(country=="South Korea", "Korea, South", country)) %>%
+    dplyr::mutate(country=ifelse(country=="United Republic of Tanzania", "Tanzania", country)) %>%
+    dplyr::mutate(country=ifelse(country=="Democratic Republic of the Congo", "Congo (Kinshasa)", country)) %>%
+    dplyr::mutate(country=ifelse(country=="Republic of the Congo", "Congo (Brazzaville)", country)) %>%
+    dplyr::mutate(country=ifelse(country=="Taiwan", "Taiwan*", country)) %>%
+    dplyr::mutate(country=ifelse(country=="Czech Republic", "Czechia", country)) %>%
     rbind(sf::st_sf(country="US", geometry = sf::st_sfc(sf::st_point(c(-96, 39))), crs = sf::st_crs(.))) %>%
     dplyr::inner_join(coronavirus_world %>%
                         dplyr::group_by(country) %>%
@@ -127,17 +132,17 @@ update_datasets = function(filename="data-raw/COVID19_MinisterioDaSaude.csv"){
     dplyr::select(-date_gt_10, -date_gt_100)
 
   date_gt_100_df = coronavirus_world %>%
-    group_by(country) %>%
+    dplyr::group_by(country) %>%
     dplyr::arrange(date) %>%
     dplyr::filter(cases >= 100) %>%
     dplyr::summarise(date_gt_100=min(date)) %>%
-    ungroup()
+    dplyr::ungroup()
   date_gt_10_df = coronavirus_world %>%
-    group_by(country) %>%
+    dplyr::group_by(country) %>%
     dplyr::arrange(date) %>%
     dplyr::filter(cases >= 10) %>%
     dplyr::summarise(date_gt_10=min(date)) %>%
-    ungroup()
+    dplyr::ungroup()
 
   coronavirus_world = coronavirus_world %>%
     dplyr::left_join(date_gt_100_df) %>%
