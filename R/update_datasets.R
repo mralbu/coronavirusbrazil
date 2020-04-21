@@ -10,38 +10,19 @@
 #' \dontrun{
 #' update_datasets()
 #' }
-update_datasets = function(filename="data-raw/COVID19_MinisterioDaSaude.csv"){
-
-  if (is.null(filename)){
-    filename = paste0("https://covid.saude.gov.br/assets/files/COVID19_",
-                      format(Sys.Date(), "%Y%m%d.csv"))
-  }
+update_datasets = function(filename="data-raw/arquivo_geral.csv"){
 
   cat("Reading https://covid.saude.gov.br dataset\n===========================================\n")
 
-  coronavirus_br_states = NULL
-  tryCatch({
-    coronavirus_br_states = readr::read_csv2(filename,
-                              locale = readr::locale(encoding = "latin1", date_format = "%d/%m/%Y")) %>%
-      dplyr::select(date=3, cases=5, deaths=7, state=2) %>%
-      dplyr::mutate(date=as.Date(date)) %>%
-      dplyr::group_by(state) %>%
-      dplyr::mutate(new_cases = cases - dplyr::lag(cases), new_deaths = deaths - dplyr::lag(deaths),
-                    death_rate = deaths/cases, percent_case_increase = 100 * (cases / dplyr::lag(cases)-1),
-                    percent_death_increase = 100 * (deaths / dplyr::lag(deaths) - 1)) %>%
-      dplyr::filter(date >= "2020-02-25")}, error = function(e) cat("")
-  )
-  if (is.null(coronavirus_br_states)){
-    coronavirus_br_states = readr::read_csv2(paste0("https://covid.saude.gov.br/assets/files/COVID19_",
-                                                    format(Sys.Date()-1, "%Y%m%d.csv")),
-                                             locale = readr::locale(date_format = "%d/%m/%Y")) %>%
-      dplyr::select(date=data, cases=casosAcumulados, deaths=obitosAcumulados, state=estado) %>%
-      dplyr::group_by(state) %>%
-      dplyr::mutate(new_cases = cases - dplyr::lag(cases), new_deaths = deaths - dplyr::lag(deaths),
-                    death_rate = deaths/cases, percent_case_increase = 100 * (cases / dplyr::lag(cases)-1),
-                    percent_death_increase = 100 * (deaths / dplyr::lag(deaths) - 1)) %>%
-      dplyr::filter(date >= "2020-02-25")
-  }
+  coronavirus_br_states = readr::read_csv2(filename,
+                            locale = readr::locale(encoding = "latin1", date_format = "%d/%m/%Y")) %>%
+    dplyr::select(date=3, cases=5, deaths=7, state=2) %>%
+    dplyr::mutate(date=as.Date(date)) %>%
+    dplyr::group_by(state) %>%
+    dplyr::mutate(new_cases = cases - dplyr::lag(cases), new_deaths = deaths - dplyr::lag(deaths),
+                  death_rate = deaths/cases, percent_case_increase = 100 * (cases / dplyr::lag(cases)-1),
+                  percent_death_increase = 100 * (deaths / dplyr::lag(deaths) - 1)) %>%
+    dplyr::filter(date >= "2020-02-25")
 
   coronavirus_br = coronavirus_br_states %>%
     dplyr::group_by(date) %>%
