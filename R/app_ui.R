@@ -5,7 +5,8 @@
 #' @export
 #'
 app_ui = function() {
-
+  shiny::tagList(
+  shiny::tags$head(shiny::includeHTML(("google-analytics.html"))),
   shiny::navbarPage("Covid-19 BR Viz", theme = shinythemes::shinytheme("cosmo"),
     shiny::tabPanel("Países",
                     shiny::sidebarLayout(
@@ -86,5 +87,6 @@ app_ui = function() {
     shiny::tabPanel("Sobre",
       shiny::includeMarkdown("Sobre.md")
     )
+  )
   )
 }
