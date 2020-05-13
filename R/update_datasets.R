@@ -14,10 +14,20 @@ update_datasets = function(filename="data-raw/arquivo_geral.csv"){
 
   cat("Reading https://covid.saude.gov.br dataset\n===========================================\n")
 
-  coronavirus_br_states = readr::read_csv2(filename,
-                            locale = readr::locale(encoding = "latin1", date_format = "%d/%m/%Y")) %>%
-    dplyr::select(date=3, cases=5, deaths=7, state=2) %>%
-    dplyr::mutate(date=as.Date(date)) %>%
+  # coronavirus_br_states = readr::read_csv2(filename,
+  #                           locale = readr::locale(encoding = "latin1", date_format = "%d/%m/%Y")) %>%
+  #   dplyr::select(date=3, cases=5, deaths=7, state=2) %>%
+  #   dplyr::mutate(date=as.Date(date)) %>%
+  #   dplyr::group_by(state) %>%
+  #   dplyr::mutate(new_cases = cases - dplyr::lag(cases), new_deaths = deaths - dplyr::lag(deaths),
+  #                 death_rate = deaths/cases, percent_case_increase = 100 * (cases / dplyr::lag(cases)-1),
+  #                 percent_death_increase = 100 * (deaths / dplyr::lag(deaths) - 1)) %>%
+  #   dplyr::filter(date >= "2020-02-25")
+
+  coronavirus_br_states = readxl::read_excel("data-raw/DT1_PAINEL_COVIDBR.xlsx") %>%
+    dplyr::filter(is.na(municipio), is.na(codmun), regiao!="Brasil") %>%
+    dplyr::mutate(state=estado, date=as.Date(data), cases=as.numeric(casosAcumulado), deaths=as.numeric(obitosAcumulado)) %>%
+    dplyr::select(state, date, cases, deaths) %>%
     dplyr::group_by(state) %>%
     dplyr::mutate(new_cases = cases - dplyr::lag(cases), new_deaths = deaths - dplyr::lag(deaths),
                   death_rate = deaths/cases, percent_case_increase = 100 * (cases / dplyr::lag(cases)-1),
@@ -184,8 +194,8 @@ update_datasets = function(filename="data-raw/arquivo_geral.csv"){
     esri2sf::esri2sf(geomType="esriGeometryPolygon") %>%
     dplyr::as_tibble() %>%
     dplyr::select(-geoms) %>%
-    dplyr::mutate(dt_notific=as.Date(dt_notific, format="%d/%m/%Y"),
-                  dt_is=as.Date(dt_is, format="%d/%m/%Y"),
+    dplyr::mutate(#dt_notific=as.Date(dt_notific, format="%d/%m/%Y"),
+                  #dt_is=as.Date(dt_is, format="%d/%m/%Y"),
                   hospitalizações=dplyr::recode(hospitalizações, S=TRUE, N=FALSE, `N/D`=NA),
                   uti=dplyr::recode(uti, S=TRUE, N=FALSE, `N/D`=NA),
                   óbitos=dplyr::recode(óbitos, S=TRUE, N=FALSE, `N/D`=NA))
