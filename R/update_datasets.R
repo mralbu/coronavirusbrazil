@@ -44,15 +44,15 @@ update_datasets = function(filename="data-raw/arquivo_geral.csv"){
   devtools::install_github("RamiKrispin/coronavirus", dependencies = F)
 
   coronavirus_world = coronavirus::coronavirus %>%
-    dplyr::group_by(Country.Region, date, type) %>%
+    dplyr::group_by(country, date, type) %>%
     dplyr::summarize(cases=sum(cases, na.rm=T)) %>%
     tidyr::pivot_wider(names_from = type, values_from = cases) %>%
-    dplyr::group_by(Country.Region) %>%
-    dplyr::mutate(country=Country.Region, new_cases=confirmed, cases=cumsum(confirmed), new_deaths=death, deaths=cumsum(death),
+    dplyr::group_by(country) %>%
+    dplyr::mutate(new_cases=confirmed, cases=cumsum(confirmed), new_deaths=death, deaths=cumsum(death),
                   death_rate = deaths/cases, percent_case_increase = 100 * (cases / dplyr::lag(cases)-1),
                   percent_death_increase = 100 * (deaths / dplyr::lag(deaths) - 1)) %>%
     dplyr::ungroup() %>%
-    dplyr::select(-Country.Region, -confirmed, -recovered, -death) %>%
+    dplyr::select(-confirmed, -recovered, -death) %>%
     dplyr::filter(country != "Brazil") %>%
     dplyr::bind_rows(coronavirus_br %>% dplyr::mutate(country="Brazil"))
 
