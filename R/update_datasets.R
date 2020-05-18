@@ -12,6 +12,8 @@
 #' }
 update_datasets = function(filename="data-raw/arquivo_geral.csv"){
 
+  library(tidyverse)
+
   cat("Reading https://covid.saude.gov.br dataset\n===========================================\n")
 
   # coronavirus_br_states = readr::read_csv2(filename,
@@ -62,7 +64,7 @@ update_datasets = function(filename="data-raw/arquivo_geral.csv"){
     dplyr::filter(place_type=="city") %>%
     dplyr::rename(date=date, state=state, city=city, cases=confirmed, deaths=deaths) %>%
     dplyr::arrange(city, date) %>%
-    dplyr::group_by(city) %>%
+    dplyr::group_by(state, city) %>%
     dplyr::mutate(new_cases = cases - dplyr::lag(cases), new_deaths = deaths - dplyr::lag(deaths),
                   death_rate = deaths/cases, percent_case_increase = 100 * (cases / dplyr::lag(cases)-1),
                   percent_death_increase = 100 * (deaths / dplyr::lag(deaths) - 1))
@@ -77,7 +79,8 @@ update_datasets = function(filename="data-raw/arquivo_geral.csv"){
 
   spatial_br_cities = readr::read_csv("https://raw.githubusercontent.com/kelvins/Municipios-Brasileiros/master/csv/municipios.csv") %>%
     dplyr::rename(city=nome) %>%
-    dplyr::inner_join(coronavirus_br_cities %>% dplyr::group_by(city) %>% dplyr::filter(date==max(date, na.rm=T))) %>%
+    dplyr::left_join(spatial_br_states %>% select(state=uf, codigo_uf=codigo)) %>%
+    dplyr::inner_join(coronavirus_br_cities %>% dplyr::group_by(state, city) %>% dplyr::filter(date==max(date, na.rm=T))) %>%
     sf::st_as_sf(coords=c("longitude", "latitude")) %>%
     dplyr::select(date, city, cases, deaths, geometry) %>%
     dplyr::mutate(log_cases = log10(cases), log_deaths = log10(deaths))
