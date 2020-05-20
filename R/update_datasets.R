@@ -26,7 +26,7 @@ update_datasets = function(filename="data-raw/arquivo_geral.csv"){
   #                 percent_death_increase = 100 * (deaths / dplyr::lag(deaths) - 1)) %>%
   #   dplyr::filter(date >= "2020-02-25")
 
-  coronavirus_br_states = readxl::read_excel("data-raw/DT1_PAINEL_COVIDBR.xlsx") %>%
+  coronavirus_br_states = readxl::read_excel("data-raw/DT1_PAINEL_COVIDBR.xlsx", guess_max = 21474836) %>%
     dplyr::filter(is.na(municipio), is.na(codmun), regiao!="Brasil") %>%
     dplyr::mutate(state=estado, date=as.Date(data), cases=as.numeric(casosAcumulado), deaths=as.numeric(obitosAcumulado)) %>%
     dplyr::select(state, date, cases, deaths) %>%
