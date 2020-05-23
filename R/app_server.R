@@ -91,7 +91,7 @@ app_server = function(input, output) {
   )
 
   output$map_cases_cities = mapview::renderMapview(
-    mapview::mapview((coronavirusbrazil::spatial_br_cities %>% dplyr::filter(cases > 0)), zcol="log_cases", cex="log_cases", alpha=1,
+    mapview::mapview((coronavirusbrazil::spatial_br_cities %>% dplyr::filter(cases > 0) %>% dplyr::mutate(log_cases = log10(cases), log_deaths = log10(deaths))), zcol="log_cases", cex="log_cases", alpha=1,
                      # col.regions=viridisLite::viridis(n=256,
                      #                                  alpha=0.1,
                      #                                  direction=1),
@@ -105,7 +105,7 @@ app_server = function(input, output) {
   )
 
   output$map_deaths_cities = mapview::renderMapview(
-    mapview::mapview(coronavirusbrazil::spatial_br_cities %>% dplyr::filter(deaths > 0), zcol="log_deaths", cex="log_deaths", alpha=1,
+    mapview::mapview(coronavirusbrazil::spatial_br_cities %>% dplyr::filter(deaths > 0) %>% dplyr::mutate(log_cases = log10(cases), log_deaths = log10(deaths)), zcol="log_deaths", cex="log_deaths", alpha=1,
                      col.regions=viridisLite::viridis(n=256,
                                                       alpha=0.1,
                                                       direction=1),

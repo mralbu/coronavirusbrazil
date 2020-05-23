@@ -82,8 +82,7 @@ update_datasets = function(filename="data-raw/arquivo_geral.csv"){
     dplyr::left_join(spatial_br_states %>% select(state=uf, codigo_uf=codigo)) %>%
     dplyr::inner_join(coronavirus_br_cities %>% dplyr::group_by(state, city) %>% dplyr::filter(date==max(date, na.rm=T))) %>%
     sf::st_as_sf(coords=c("longitude", "latitude")) %>%
-    dplyr::select(date, city, cases, deaths, geometry) %>%
-    dplyr::mutate(log_cases = log10(cases), log_deaths = log10(deaths))
+    dplyr::select(city, cases, deaths, geometry)
 
   spatial_world = sf::read_sf("https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json") %>%
     sf::st_centroid() %>%
