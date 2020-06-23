@@ -10,21 +10,13 @@
 #' \dontrun{
 #' update_datasets()
 #' }
-update_datasets = function(filename="data-raw/arquivo_geral.csv"){
-
-  library(tidyverse)
+update_datasets = function(){
 
   cat("Reading https://covid.saude.gov.br dataset\n===========================================\n")
 
-  # coronavirus_br_states = readr::read_csv2(filename,
-  #                           locale = readr::locale(encoding = "latin1", date_format = "%d/%m/%Y")) %>%
-  #   dplyr::select(date=3, cases=5, deaths=7, state=2) %>%
-  #   dplyr::mutate(date=as.Date(date)) %>%
-  #   dplyr::group_by(state) %>%
-  #   dplyr::mutate(new_cases = cases - dplyr::lag(cases), new_deaths = deaths - dplyr::lag(deaths),
-  #                 death_rate = deaths/cases, percent_case_increase = 100 * (cases / dplyr::lag(cases)-1),
-  #                 percent_death_increase = 100 * (deaths / dplyr::lag(deaths) - 1)) %>%
-  #   dplyr::filter(date >= "2020-02-25")
+  r = httr::GET("https://xx9p7hp1p7.execute-api.us-east-1.amazonaws.com/prod/PortalGeralApi")
+  url = jsonlite::fromJSON(httr::content(r, "text", encoding = "utf-8"))$planilha$arquivo$url
+  httr::GET(url, httr::write_disk("data-raw/DT1_PAINEL_COVIDBR.xlsx", overwrite=TRUE))
 
   coronavirus_br_states = readxl::read_excel("data-raw/DT1_PAINEL_COVIDBR.xlsx", guess_max = 21474836) %>%
     dplyr::filter(is.na(municipio), is.na(codmun), regiao!="Brasil") %>%
@@ -34,7 +26,9 @@ update_datasets = function(filename="data-raw/arquivo_geral.csv"){
     dplyr::mutate(new_cases = cases - dplyr::lag(cases), new_deaths = deaths - dplyr::lag(deaths),
                   death_rate = deaths/cases, percent_case_increase = 100 * (cases / dplyr::lag(cases)-1),
                   percent_death_increase = 100 * (deaths / dplyr::lag(deaths) - 1)) %>%
-    dplyr::filter(date >= "2020-02-25")
+    dplyr::filter(date >= "2020-02-25") %>%
+    dplyr::bind_rows(coronavirusbrazil::coronavirus_br_states) %>%
+    unique()
 
   coronavirus_br = coronavirus_br_states %>%
     dplyr::group_by(date) %>%
@@ -79,7 +73,7 @@ update_datasets = function(filename="data-raw/arquivo_geral.csv"){
 
   spatial_br_cities = readr::read_csv("https://raw.githubusercontent.com/kelvins/Municipios-Brasileiros/master/csv/municipios.csv") %>%
     dplyr::rename(city=nome) %>%
-    dplyr::left_join(spatial_br_states %>% select(state=uf, codigo_uf=codigo)) %>%
+    dplyr::left_join(spatial_br_states %>% dplyr::select(state=uf, codigo_uf=codigo)) %>%
     dplyr::inner_join(coronavirus_br_cities %>% dplyr::group_by(state, city) %>% dplyr::filter(date==max(date, na.rm=T))) %>%
     sf::st_as_sf(coords=c("longitude", "latitude")) %>%
     dplyr::select(city, cases, deaths, geometry)
