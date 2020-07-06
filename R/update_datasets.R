@@ -14,9 +14,9 @@ update_datasets = function(){
 
   cat("Reading https://covid.saude.gov.br dataset\n===========================================\n")
 
-  r = httr::GET("https://xx9p7hp1p7.execute-api.us-east-1.amazonaws.com/prod/PortalGeralApi")
-  url = jsonlite::fromJSON(httr::content(r, "text", encoding = "utf-8"))$planilha$arquivo$url
-  httr::GET(url, httr::write_disk("data-raw/DT1_PAINEL_COVIDBR.xlsx", overwrite=TRUE))
+  #r = httr::GET("https://xx9p7hp1p7.execute-api.us-east-1.amazonaws.com/prod/PortalGeralApi")
+  #url = jsonlite::fromJSON(httr::content(r, "text", encoding = "utf-8"))$planilha$arquivo$url
+  #httr::GET(url, httr::write_disk("data-raw/DT1_PAINEL_COVIDBR.xlsx", overwrite=TRUE))
 
   coronavirus_br_states = readxl::read_excel("data-raw/DT1_PAINEL_COVIDBR.xlsx", guess_max = 21474836) %>%
     dplyr::filter(is.na(municipio), is.na(codmun), regiao!="Brasil") %>%
@@ -27,7 +27,7 @@ update_datasets = function(){
                   death_rate = deaths/cases, percent_case_increase = 100 * (cases / dplyr::lag(cases)-1),
                   percent_death_increase = 100 * (deaths / dplyr::lag(deaths) - 1)) %>%
     dplyr::filter(date >= "2020-02-25") %>%
-    dplyr::bind_rows(coronavirusbrazil::coronavirus_br_states) %>%
+    #dplyr::bind_rows(coronavirusbrazil::coronavirus_br_states) %>%
     unique()
 
   coronavirus_br = coronavirus_br_states %>%
@@ -53,7 +53,7 @@ update_datasets = function(){
     dplyr::bind_rows(coronavirus_br %>% dplyr::mutate(country="Brazil"))
 
   cat("Reading https://brasil.io/dataset/covid19 dataset\n=================================================\n")
-  coronavirus_br_cities = "https://brasil.io/dataset/covid19/caso?format=csv" %>%
+  coronavirus_br_cities = "https://data.brasil.io/dataset/covid19/caso.csv.gz" %>%
     readr::read_csv() %>%
     dplyr::filter(place_type=="city") %>%
     dplyr::rename(date=date, state=state, city=city, cases=confirmed, deaths=deaths) %>%
