@@ -8,13 +8,13 @@
 #' @param filter_variable variable to be filtered
 #' @param filter_values filtering values
 #' @param log_scale plot on log scale?
-#' @param linear_smooth plot line linear smooth?
+#' @param smooth plot smooth?
 #' @param facet variable to be used for facetting
 #'
 #' @return
 #' @export
 plot_coronavirus = function(coronavirus_br, xaxis="date", yaxis="cases",
-                            color=NULL, log_scale=FALSE, linear_smooth=FALSE,
+                            color=NULL, log_scale=FALSE, smooth=FALSE,
                             filter_variable=NULL, filter_values=NULL, facet=NA){
 
   # Create yaxis_label and xaxis_label
@@ -45,7 +45,7 @@ plot_coronavirus = function(coronavirus_br, xaxis="date", yaxis="cases",
   }
 
   if (log_scale) g = g + ggplot2::scale_y_log10()
-  if (linear_smooth) g = g + ggplot2::stat_smooth(method="lm")
+  if (smooth) g = g + ggplot2::stat_smooth()
   if (xaxis == "cases") g = g + ggplot2::scale_x_log10() + ggplot2::xlab(ifelse(xaxis=="cases", "Casos Acumulados", "Mortes"))
   if (!is.null(facet) & !is.na(facet) & !is.null(filter_values)) g = g + ggplot2::facet_wrap({facet})
 
