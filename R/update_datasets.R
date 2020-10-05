@@ -18,7 +18,8 @@ update_datasets = function(){
   #url = jsonlite::fromJSON(httr::content(r, "text", encoding = "utf-8"))$planilha$arquivo$url
   #httr::GET(url, httr::write_disk("data-raw/DT1_PAINEL_COVIDBR.xlsx", overwrite=TRUE))
 
-  coronavirus_br_states = readxl::read_excel("data-raw/DT1_PAINEL_COVIDBR.xlsx", guess_max = 21474836) %>%
+  # coronavirus_br_states = readxl::read_excel("data-raw/DT1_PAINEL_COVIDBR.xlsx", guess_max = 21474836) %>%
+  coronavirus_br_states = readr::read_csv2("data-raw/DT1_PAINEL_COVIDBR.csv", guess_max = 21474836) %>%
     dplyr::filter(is.na(municipio), is.na(codmun), regiao!="Brasil") %>%
     dplyr::mutate(state=estado, date=as.Date(data), cases=as.numeric(casosAcumulado), deaths=as.numeric(obitosAcumulado)) %>%
     dplyr::select(state, date, cases, deaths) %>%
@@ -71,7 +72,7 @@ update_datasets = function(){
     dplyr::left_join(coronavirus_br_states %>% dplyr::filter(date==max(date, na.rm=T)), by=c("uf"="state")) %>%
     dplyr::mutate(log_cases = log10(cases), log_deaths = log10(deaths))
 
-  spatial_br_cities = readr::read_csv("https://raw.githubusercontent.com/kelvins/Municipios-Brasileiros/master/csv/municipios.csv") %>%
+  spatial_br_cities = readr::read_csv("https://raw.githubusercontent.com/kelvins/Municipios-Brasileiros/main/csv/municipios.csv") %>%
     dplyr::rename(city=nome) %>%
     dplyr::left_join(spatial_br_states %>% dplyr::select(state=uf, codigo_uf=codigo)) %>%
     dplyr::inner_join(coronavirus_br_cities %>% dplyr::group_by(state, city) %>% dplyr::filter(date==max(date, na.rm=T))) %>%
