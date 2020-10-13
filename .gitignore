@@ -4,3 +4,4 @@
 .Ruserdata
 inst/doc
 rsconnect
+data-raw/coronavirus_cities.csv
