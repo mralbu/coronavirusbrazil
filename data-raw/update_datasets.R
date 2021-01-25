@@ -1,2 +1,0 @@
-
-coronavirusbrazil::update_datasets()
