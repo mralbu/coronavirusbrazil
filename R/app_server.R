@@ -10,7 +10,7 @@ app_server = function(input, output) {
 
     g = coronavirusbrazil::plot_coronavirus(coronavirusbrazil::coronavirus_world,
                                             input$xaxis_world, input$yaxis_world, color="country",
-                                            log_scale=input$log_scale_world, smooth=input$linear_smooth_world,
+                                            log_scale=input$log_scale_world, smooth=FALSE,
                                             filter_variable="country", filter_values=input$filter_country_world,
                                             facet=dplyr::if_else(input$facet_country_world, "country", NULL))
     g %>% plotly::ggplotly()
@@ -20,7 +20,7 @@ app_server = function(input, output) {
 
     g = coronavirusbrazil::plot_coronavirus(coronavirusbrazil::coronavirus_br_states,
                                             input$xaxis_states, input$yaxis_states, color="state",
-                                            log_scale=input$log_scale_states, smooth=input$linear_smooth_states,
+                                            log_scale=input$log_scale_states, smooth=FALSE,
                                             filter_variable="state", filter_values=input$filter_uf_states,
                                             facet=dplyr::if_else(input$facet_uf_states, "state",  NULL))
     g %>% plotly::ggplotly()
@@ -30,7 +30,7 @@ app_server = function(input, output) {
 
     g = coronavirusbrazil::plot_coronavirus(coronavirusbrazil::coronavirus_br_cities,
                                             input$xaxis_cities, input$yaxis_cities, color="city",
-                                            log_scale=input$log_scale_cities, smooth=input$linear_smooth_cities,
+                                            log_scale=input$log_scale_cities, smooth=FALSE,
                                             filter_variable="city", filter_values=input$filter_cities,
                                             facet=dplyr::if_else(input$facet_cities, "city",  NULL))
     g %>% plotly::ggplotly()

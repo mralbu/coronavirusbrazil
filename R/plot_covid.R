@@ -36,11 +36,14 @@ plot_coronavirus = function(coronavirus_br, xaxis="date", yaxis="cases",
 
   if (is.null(color)){
     g = df_ %>%
-      ggplot2::ggplot(ggplot2::aes_string(xaxis, yaxis)) + ggplot2::geom_point() +
+      dplyr::group_by(!!as.symbol(color)) %>%
+      dplyr::mutate(roll_mean=zoo::rollmean(!!as.symbol(yaxis), 7, na.pad = TRUE)) %>%
+      ggplot2::ggplot(ggplot2::aes_string(xaxis, yaxis)) + ggplot2::geom_point(alpha=0.5) + geom_line(aes(y=roll_mean), size=2) +
       ggplot2::xlab(xaxis_label) + ggplot2::ylab(yaxis_label) + ggplot2::ylim(0, NA)
   } else {
     g = df_ %>%
-        ggplot2::ggplot(ggplot2::aes_string(xaxis, yaxis, color=color)) + ggplot2::geom_point() +
+        dplyr::mutate(roll_mean=zoo::rollmean(!!as.symbol(yaxis), 7, na.pad = TRUE)) %>%
+        ggplot2::ggplot(ggplot2::aes_string(xaxis, yaxis, color=color)) + ggplot2::geom_point(alpha=0.5) + geom_line(aes(y=roll_mean), size=2) +
         ggplot2::xlab(xaxis_label) + ggplot2::ylab(yaxis_label) + ggplot2::ylim(0, NA) + ggplot2::scale_color_discrete(color_label)
   }
 

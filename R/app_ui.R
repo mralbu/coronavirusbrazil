@@ -11,13 +11,13 @@ app_ui = function() {
     shiny::tabPanel("Países",
                     shiny::sidebarLayout(
                       shiny::sidebarPanel(
-                        shiny::selectInput("yaxis_world", "Eixo y", choices = list(Casos="cases", Mortes="deaths", Mortalidade="death_rate", `Variação de Casos`="new_cases", `Variação de Mortes`="new_deaths", `Variação de Casos (%)`="percent_case_increase", `Variação de Mortes (%)`="percent_death_increase")),
+                        shiny::selectInput("yaxis_world", "Eixo y", selected = "new_deaths",  choices = list(Casos="cases", Mortes="deaths", Mortalidade="death_rate", `Variação de Casos`="new_cases", `Variação de Mortes`="new_deaths", `Variação de Casos (%)`="percent_case_increase", `Variação de Mortes (%)`="percent_death_increase")),
                         shiny::selectInput("xaxis_world", "Eixo X", choices = list(Data="date", `Dias depois de 10 Casos`="days_gt_10",
                                                                                     `Dias depois de 100 Casos`="days_gt_100", `Casos Acumulados`="cases")),
                         shiny::selectInput("filter_country_world", "Países", multiple = TRUE, choices = sort(unique(coronavirusbrazil::coronavirus_world$country)), selected = c("Brazil")),
-                        shiny::checkboxInput("log_scale_world", "Escala Log", value = TRUE),
+                        shiny::checkboxInput("log_scale_world", "Escala Log", value = FALSE),
                         shiny::checkboxInput("facet_country_world", "Gráficos Individuais", value = TRUE),
-                        shiny::checkboxInput("linear_smooth_world", "Tendência")
+                        # shiny::checkboxInput("linear_smooth_world", "Tendência")
                       ),
                       shiny::mainPanel(
                         plotly::plotlyOutput("plot_countries")
@@ -27,13 +27,13 @@ app_ui = function() {
       shiny::tabPanel("Estados",
         shiny::sidebarLayout(
           shiny::sidebarPanel(
-            shiny::selectInput("yaxis_states", "Eixo y", choices = list(Casos="cases", Mortes="deaths", Mortalidade="death_rate", `Variação de Casos`="new_cases", `Variação de Mortes`="new_deaths", `Variação de Casos (%)`="percent_case_increase", `Variação de Mortes (%)`="percent_death_increase")),
+            shiny::selectInput("yaxis_states", "Eixo y", selected="new_deaths", choices = list(Casos="cases", Mortes="deaths", Mortalidade="death_rate", `Variação de Casos`="new_cases", `Variação de Mortes`="new_deaths", `Variação de Casos (%)`="percent_case_increase", `Variação de Mortes (%)`="percent_death_increase")),
             shiny::selectInput("xaxis_states", "Eixo X", choices = list(Data="date", `Dias depois de 10 Casos`="days_gt_10",
                                                                         `Dias depois de 100 Casos`="days_gt_100", `Casos Acumulados`="cases")),
             shiny::selectInput("filter_uf_states", "Estados", multiple = TRUE, choices = sort(unique(coronavirusbrazil::coronavirus_br_states$state)), selected = c("SP", "RJ")),
-            shiny::checkboxInput("log_scale_states", "Escala Log", value = TRUE),
+            shiny::checkboxInput("log_scale_states", "Escala Log", value = FALSE),
             shiny::checkboxInput("facet_uf_states", "Gráficos Individuais", value = TRUE),
-            shiny::checkboxInput("linear_smooth_states", "Tendência")
+            # shiny::checkboxInput("linear_smooth_states", "Tendência")
                ),
           shiny::mainPanel(
             plotly::plotlyOutput("plot_states")
@@ -43,13 +43,13 @@ app_ui = function() {
     shiny::tabPanel("Cidades",
                     shiny::sidebarLayout(
                       shiny::sidebarPanel(
-                        shiny::selectInput("yaxis_cities", "Eixo y", choices = list(Casos="cases", Mortes="deaths", Mortalidade="death_rate", `Variação de Casos`="new_cases", `Variação de Mortes`="new_deaths", `Variação de Casos (%)`="percent_case_increase", `Variação de Mortes (%)`="percent_death_increase")),
+                        shiny::selectInput("yaxis_cities", "Eixo y", selected="new_deaths", choices = list(Casos="cases", Mortes="deaths", Mortalidade="death_rate", `Variação de Casos`="new_cases", `Variação de Mortes`="new_deaths", `Variação de Casos (%)`="percent_case_increase", `Variação de Mortes (%)`="percent_death_increase")),
                         shiny::selectInput("xaxis_cities", "Eixo X", choices = list(Data="date", `Dias depois de 10 Casos`="days_gt_10",
                                                                                     `Dias depois de 100 Casos`="days_gt_100", `Casos Acumulados`="cases")),
                         shiny::selectInput("filter_cities", "Cidades", multiple = TRUE, choices = sort(unique(coronavirusbrazil::coronavirus_br_cities$city)), selected = c("Rio de Janeiro", "São Paulo")),
-                        shiny::checkboxInput("log_scale_cities", "Escala Log", value = TRUE),
+                        shiny::checkboxInput("log_scale_cities", "Escala Log", value = FALSE),
                         shiny::checkboxInput("facet_cities", "Gráficos Individuais", value = TRUE),
-                        shiny::checkboxInput("linear_smooth_cities", "Tendência")
+                        # shiny::checkboxInput("linear_smooth_cities", "Tendência")
                       ),
                       shiny::mainPanel(
                         plotly::plotlyOutput("plot_cities")

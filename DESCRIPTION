@@ -25,7 +25,8 @@ Imports:
     shinythemes,
     pkgload,
     rlang,
-    config
+    config,
+    zoo
 RoxygenNote: 7.0.2
 URL: https://github.com/mralbu/coronavirusbrazil
 BugReports: https://github.com/mralbu/coronavirusbrazil/issues
